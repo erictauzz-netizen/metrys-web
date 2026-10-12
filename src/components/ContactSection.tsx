@@ -35,35 +35,32 @@ export const ContactSection: FC<ContactSectionProps> = ({
     setIsSubmitting(true);
 
     try {
-      const webhookUrl = import.meta.env.VITE_METRYS_CRM_WEBHOOK_URL as string | undefined;
+      const webhookUrl =
+        (import.meta.env.VITE_METRYS_CRM_WEBHOOK_URL as string | undefined) || '/api/lead';
 
-      if (webhookUrl) {
-        const searchParams = new URLSearchParams(window.location.search);
-        const formPayload = new URLSearchParams();
-        formPayload.set('nome', name.trim());
-        formPayload.set('telefone', phone.trim());
-        if (email.trim()) formPayload.set('email', email.trim());
-        if (company.trim()) formPayload.set('empresa', company.trim());
-        if (notes.trim()) formPayload.set('mensagem', notes.trim());
+      const searchParams = new URLSearchParams(window.location.search);
+      const formPayload = new URLSearchParams();
+      formPayload.set('nome', name.trim());
+      formPayload.set('telefone', phone.trim());
+      if (email.trim()) formPayload.set('email', email.trim());
+      if (company.trim()) formPayload.set('empresa', company.trim());
+      if (notes.trim()) formPayload.set('mensagem', notes.trim());
 
-        for (const utmKey of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']) {
-          const val = searchParams.get(utmKey);
-          if (val) formPayload.set(utmKey, val);
-        }
+      for (const utmKey of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']) {
+        const val = searchParams.get(utmKey);
+        if (val) formPayload.set(utmKey, val);
+      }
 
-        const res = await fetch(webhookUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-          },
-          body: formPayload.toString(),
-        });
+      const res = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        },
+        body: formPayload.toString(),
+      });
 
-        if (!res.ok) {
-          throw new Error('Falha ao enviar para o CRM');
-        }
-      } else {
-        await new Promise((resolve) => setTimeout(resolve, 600));
+      if (!res.ok) {
+        throw new Error('Falha ao enviar para o CRM');
       }
 
       setIsSubmitting(false);

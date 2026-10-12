@@ -7,5 +7,12 @@ export default defineConfig({
   server: {
     port: 3003,
     strictPort: true,
+    proxy: {
+      '/api/lead': {
+        target: 'http://localhost:3006',
+        changeOrigin: true,
+        rewrite: () => '/api/v1/webhooks/in/metrys-site-institucional-oficial',
+      },
+    },
   },
 })
