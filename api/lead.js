@@ -121,6 +121,15 @@ export default async function handler(req, res) {
         const createdContacts = await createContactRes.json();
         if (Array.isArray(createdContacts) && createdContacts.length > 0) {
           contactId = createdContacts[0].id;
+        } else if (rawEmail) {
+          const findByEmailRes = await fetch(
+            `${supabaseUrl}/rest/v1/contacts?organization_id=eq.${orgId}&email_normalized=eq.${encodeURIComponent(rawEmail)}&is_merged_into=is.null&select=id&limit=1`,
+            { headers }
+          );
+          const foundByEmail = await findByEmailRes.json();
+          if (Array.isArray(foundByEmail) && foundByEmail.length > 0) {
+            contactId = foundByEmail[0].id;
+          }
         }
       }
     }

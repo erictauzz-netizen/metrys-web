@@ -59,8 +59,9 @@ export const ContactSection: FC<ContactSectionProps> = ({
         body: formPayload.toString(),
       });
 
-      if (!res.ok) {
-        throw new Error('Falha ao enviar para o CRM');
+      const payloadResult = await res.json().catch(() => null);
+      if (!res.ok || !payloadResult?.data?.lead_id) {
+        throw new Error('Falha ao confirmar criação do lead no CRM');
       }
 
       setIsSubmitting(false);
