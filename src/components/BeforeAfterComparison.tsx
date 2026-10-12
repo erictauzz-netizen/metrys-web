@@ -48,7 +48,7 @@ export const BeforeAfterComparison: FC<BeforeAfterComparisonProps> = ({ onCtaCli
       },
       after: {
         tag: 'Integração contínua sem esforço manual',
-        text: 'Metrys Flow conecta vendas, financeiro e emissão fiscal sem intervenção humana e com zero erro de digitação.',
+        text: 'Metrys Automações conecta vendas, financeiro e emissão fiscal sem intervenção humana e com zero erro de digitação.',
         metric: '120h operacionais economizadas/mês',
       },
     },

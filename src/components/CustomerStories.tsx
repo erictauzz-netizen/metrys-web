@@ -22,7 +22,7 @@ export const CustomerStories: FC = () => {
       metric: '140 Horas Salvas / Mês',
       tagline: 'Automação fiscal sem falhas de digitação',
       story:
-        'A conciliação bancária e emissão de notas fiscais era um gargalo que exigia 3 pessoas dedicadas. O Metrys Flow conectou nosso ERP ao sistema de vendas com precisão cirúrgica. Eliminamos o retrabalho manual por completo.',
+        'A conciliação bancária e emissão de notas fiscais era um gargalo que exigia 3 pessoas dedicadas. O Metrys Automações conectou nosso ERP ao sistema de vendas com precisão cirúrgica. Eliminamos o retrabalho manual por completo.',
     },
     {
       name: 'Dr. Roberto Fontes',

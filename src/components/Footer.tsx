@@ -47,12 +47,12 @@ export const Footer: FC = () => {
               </li>
               <li>
                 <a href="#solucoes" className="hover:text-white transition-colors">
-                  <strong className="text-white">METRYS FLOW</strong> — Automações e integrações
+                  <strong className="text-white">METRYS AUTOMAÇÕES</strong> — Automações e integrações
                 </a>
               </li>
               <li>
                 <a href="#solucoes" className="hover:text-white transition-colors">
-                  <strong className="text-white">METRYS SYSTEMS</strong> — Desenvolvimento de sistemas
+                  <strong className="text-white">METRYS SOB MEDIDA</strong> — Desenvolvimento de sistemas
                 </a>
               </li>
             </ul>

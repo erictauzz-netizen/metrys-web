@@ -12,7 +12,7 @@ export const FaqSection: FC = () => {
     },
     {
       q: 'Preciso trocar o meu ERP, CRM ou WhatsApp atual para usar a Metrys?',
-      a: 'Não. O ecossistema Metrys foi projetado para conviver e potencializar o que sua empresa já utiliza. O Metrys Flow conecta seu WhatsApp corporativo aos seus sistemas existentes (como Bling, Omie, Totvs, SAP, RD Station ou sistemas próprios) sem quebrar o fluxo atual.',
+      a: 'Não. O ecossistema Metrys foi projetado para conviver e potencializar o que sua empresa já utiliza. O Metrys Automações conecta seu WhatsApp corporativo aos seus sistemas existentes (como Bling, Omie, Totvs, SAP, RD Station ou sistemas próprios) sem quebrar o fluxo atual.',
     },
     {
       q: 'Como é garantida a segurança dos dados e o cumprimento da LGPD?',

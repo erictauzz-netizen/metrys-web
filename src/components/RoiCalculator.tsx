@@ -121,9 +121,9 @@ export const RoiCalculator: FC<RoiCalculatorProps> = ({ onOpenContactWithValues 
             </div>
 
             <div className="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-xs text-[#52667D] flex items-center gap-2.5">
-              <Sparkles className="w-4 h-4 text-[#EAB308] flex-shrink-0" />
+              <Sparkles className="w-4 h-4 text-[#2A4365] flex-shrink-0" />
               <span>
-                Cálculo calibrado com índice conservador de 70% de tarefas eliminadas via Metrys Flow e Metrys AI.
+                Cálculo calibrado com índice conservador de 70% de tarefas eliminadas via Metrys Automações e Metrys AI.
               </span>
             </div>
 

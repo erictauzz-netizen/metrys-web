@@ -98,8 +98,8 @@ export const BrandFlyerModal: FC<BrandFlyerModalProps> = ({ isOpen, onClose }) =
               <p className="text-[11px] text-[#52667D] leading-relaxed">
                 1. <strong>METRYS CRM</strong> (Gestão comercial)<br />
                 2. <strong>METRYS AI</strong> (Agentes inteligentes)<br />
-                3. <strong>METRYS FLOW</strong> (Automações e integrações)<br />
-                4. <strong>METRYS SYSTEMS</strong> (Desenvolvimento de sistemas)
+                3. <strong>METRYS AUTOMAÇÕES</strong> (Automações e integrações)<br />
+                4. <strong>METRYS SOB MEDIDA</strong> (Desenvolvimento de sistemas)
               </p>
             </div>
           </div>

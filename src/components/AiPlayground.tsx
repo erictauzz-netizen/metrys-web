@@ -37,7 +37,7 @@ export const AiPlayground: FC = () => {
       prompt: 'Olá, tenho uma distribuidora com 45 funcionários e perdemos muitos leads no WhatsApp sem follow-up.',
     },
     {
-      label: 'Automação de NFs no Metrys Flow',
+      label: 'Automação de NFs no Metrys Automações',
       prompt: 'Vocês conseguem integrar o faturamento do Bling direto com o nosso sistema interno sem digitar manual?',
     },
     {
@@ -78,7 +78,7 @@ export const AiPlayground: FC = () => {
         action = 'Triagem de Lead + Registro no Metrys CRM';
       } else if (lower.includes('bling') || lower.includes('integrar') || lower.includes('nf') || lower.includes('fluxo') || lower.includes('manual')) {
         reply =
-          'Sim, exatamente a especialidade do METRYS FLOW. Criamos um webhook que escuta a emissão ou alteração de pedido no Bling (ou outro ERP como Omie/Totvs) e sincroniza os dados via API segura com o seu banco de dados interno em menos de 100 milissegundos, com log de auditoria e retry automático.';
+          'Sim, exatamente a especialidade do METRYS AUTOMAÇÕES. Criamos um webhook que escuta a emissão ou alteração de pedido no Bling (ou outro ERP como Omie/Totvs) e sincroniza os dados via API segura com o seu banco de dados interno em menos de 100 milissegundos, com log de auditoria e retry automático.';
         action = 'Mapeamento de Webhook & API REST';
       } else if (lower.includes('seguran') || lower.includes('lgpd') || lower.includes('privacid') || lower.includes('públic')) {
         reply =
@@ -86,7 +86,7 @@ export const AiPlayground: FC = () => {
         action = 'Protocolo Zero-Data-Leak Auditado';
       } else {
         reply =
-          `Compreendido. Para resolver esse ponto na sua operação, compomos um fluxo unificado entre METRYS AI e METRYS SYSTEMS. Nossos agentes executam tarefas com base estrita nos seus manuais operacionais e parâmetros de negócio, sem improvisos.`;
+          `Compreendido. Para resolver esse ponto na sua operação, compomos um fluxo unificado entre METRYS AI e METRYS SOB MEDIDA. Nossos agentes executam tarefas com base estrita nos seus manuais operacionais e parâmetros de negócio, sem improvisos.`;
         action = 'Análise de Requisitos Concluída';
       }
 

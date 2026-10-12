@@ -24,19 +24,19 @@ export const CompanyDiagnostic: FC<CompanyDiagnosticProps> = ({ onRecommendation
     {
       id: 'manual',
       label: 'Tarefas manuais repetitivas e retrabalho entre planilhas/ERPs',
-      recommendation: ['METRYS FLOW'],
+      recommendation: ['METRYS AUTOMAÇÕES'],
       reason: 'Orquestração de fluxos automáticos com conciliação e webhooks sem toque humano.',
     },
     {
       id: 'software',
       label: 'Sistemas legados lentos ou falta de plataforma sob medida',
-      recommendation: ['METRYS SYSTEMS'],
+      recommendation: ['METRYS SOB MEDIDA'],
       reason: 'Engenharia de software moderna e banco de dados corporativo escalável.',
     },
     {
       id: 'all',
       label: 'Queremos transformar a operação de ponta a ponta com IA',
-      recommendation: ['METRYS CRM', 'METRYS AI', 'METRYS FLOW', 'METRYS SYSTEMS'],
+      recommendation: ['METRYS CRM', 'METRYS AI', 'METRYS AUTOMAÇÕES', 'METRYS SOB MEDIDA'],
       reason: 'Implementação do ecossistema completo para aceleração contínua de receita.',
     },
   ];

@@ -47,11 +47,11 @@ export const WorkflowInteractive: FC = () => {
     {
       id: 3,
       title: '4. Integração Contínua',
-      subtitle: 'METRYS FLOW orquestrador',
+      subtitle: 'METRYS AUTOMAÇÕES orquestrador',
       icon: GitMerge,
-      summary: 'Após a aprovação da proposta, o Flow aciona o ERP para emitir contrato e gerar credenciais.',
+      summary: 'Após a aprovação da proposta, o módulo de Automações aciona o ERP para emitir contrato e gerar credenciais.',
       detail: {
-        channel: 'Metrys Flow Automation',
+        channel: 'Metrys Automações & Processos',
         speed: 'Automação em segundo plano',
         event: 'Contrato enviado para assinatura digital + NF gerada',
         log: 'Zero digitação manual e conciliação bancária sincronizada',
@@ -60,11 +60,11 @@ export const WorkflowInteractive: FC = () => {
     {
       id: 4,
       title: '5. Inteligência & Sistemas',
-      subtitle: 'METRYS SYSTEMS',
+      subtitle: 'METRYS SOB MEDIDA',
       icon: Laptop,
       summary: 'Diretoria acompanha métricas de receita, LTV e produtividade em dashboards executivos sob medida.',
       detail: {
-        channel: 'Metrys Systems Architecture',
+        channel: 'Metrys Sob Medida Architecture',
         speed: 'Atualização contínua',
         event: 'Dashboard de BI e métricas gerenciais em tempo real',
         log: 'Previsão de fechamento e auditoria permanente',

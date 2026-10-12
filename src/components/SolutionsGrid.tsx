@@ -54,8 +54,8 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
     },
     {
       id: 'flow',
-      code: 'FLOW',
-      title: 'METRYS FLOW',
+      code: 'AUTOMAÇÕES',
+      title: 'METRYS AUTOMAÇÕES',
       subtitle: 'Automações e integrações',
       badge: 'Conexão de Processos',
       userRole: 'Gestores de Operações & Controladoria',
@@ -63,7 +63,7 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
       icon: GitFork,
       tagline: 'Unifique seus softwares e elimine o trabalho manual.',
       description:
-        'Conecte ERPs, sistemas legados, gateways de pagamento, plataformas fiscais e CRMs. O Metrys Flow orquestra rotinas operacionais completas em segundo plano, sem necessidade de intervenção humana em tarefas repetitivas.',
+        'Conecte ERPs, sistemas legados, gateways de pagamento, plataformas fiscais e CRMs. O Metrys Automações orquestra rotinas operacionais completas em segundo plano, sem necessidade de intervenção humana em tarefas repetitivas.',
       features: [
         'Disparo de webhooks e sincronização bidirecional em tempo real',
         'Automação de conciliação bancária e emissão de notas fiscais',
@@ -75,8 +75,8 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
     },
     {
       id: 'systems',
-      code: 'SYSTEMS',
-      title: 'METRYS SYSTEMS',
+      code: 'SOB MEDIDA',
+      title: 'METRYS SOB MEDIDA',
       subtitle: 'Desenvolvimento de sistemas',
       badge: 'Engenharia Sob Medida',
       userRole: 'Líderes de TI & Inovação Estratégica',
@@ -259,7 +259,7 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
               Todas as 4 soluções operam em sinergia total
             </h4>
             <p className="text-sm text-[#52667D]">
-              O lead qualificado pelo <strong>Metrys AI</strong> entra diretamente no <strong>Metrys CRM</strong>, tem suas tarefas faturadas via <strong>Metrys Flow</strong> e é alimentado no seu sistema central com <strong>Metrys Systems</strong>.
+              O lead qualificado pelo <strong>Metrys AI</strong> entra diretamente no <strong>Metrys CRM</strong>, tem suas tarefas faturadas via <strong>Metrys Automações</strong> e é alimentado no seu sistema central com <strong>Metrys Sob Medida</strong>.
             </p>
           </div>
 

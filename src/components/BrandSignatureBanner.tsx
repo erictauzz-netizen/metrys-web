@@ -22,13 +22,13 @@ export const BrandSignatureBanner: FC<BrandSignatureBannerProps> = ({ onPillarCl
     },
     {
       id: 'flow',
-      title: 'METRYS FLOW',
+      title: 'METRYS AUTOMAÇÕES',
       subtitle: 'Automações e integrações',
       icon: GitFork,
     },
     {
       id: 'systems',
-      title: 'METRYS SYSTEMS',
+      title: 'METRYS SOB MEDIDA',
       subtitle: 'Desenvolvimento de sistemas',
       icon: Code2,
     },

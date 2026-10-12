@@ -25,8 +25,8 @@ export function App() {
     const solutionMap: Record<string, string> = {
       crm: 'METRYS CRM (Gestão comercial)',
       ai: 'METRYS AI (Agentes inteligentes)',
-      flow: 'METRYS FLOW (Automações e integrações)',
-      systems: 'METRYS SYSTEMS (Desenvolvimento de sistemas)',
+      flow: 'METRYS Automações (Automações e integrações)',
+      systems: 'METRYS Sob Medida (Desenvolvimento de sistemas)',
     };
 
     if (solutionId === 'all') {
