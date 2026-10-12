@@ -24,7 +24,7 @@ export const ContactSection: FC<ContactSectionProps> = ({
     }
   }, [initialNotes]);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     if (!name.trim() || !phone.trim()) {
@@ -34,7 +34,38 @@ export const ContactSection: FC<ContactSectionProps> = ({
 
     setIsSubmitting(true);
 
-    setTimeout(() => {
+    try {
+      const webhookUrl = import.meta.env.VITE_METRYS_CRM_WEBHOOK_URL as string | undefined;
+
+      if (webhookUrl) {
+        const searchParams = new URLSearchParams(window.location.search);
+        const formPayload = new URLSearchParams();
+        formPayload.set('nome', name.trim());
+        formPayload.set('telefone', phone.trim());
+        if (email.trim()) formPayload.set('email', email.trim());
+        if (company.trim()) formPayload.set('empresa', company.trim());
+        if (notes.trim()) formPayload.set('mensagem', notes.trim());
+
+        for (const utmKey of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']) {
+          const val = searchParams.get(utmKey);
+          if (val) formPayload.set(utmKey, val);
+        }
+
+        const res = await fetch(webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+          },
+          body: formPayload.toString(),
+        });
+
+        if (!res.ok) {
+          throw new Error('Falha ao enviar para o CRM');
+        }
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 600));
+      }
+
       setIsSubmitting(false);
       setSubmitted(true);
       confetti({
@@ -46,7 +77,10 @@ export const ContactSection: FC<ContactSectionProps> = ({
       toast.success('Solicitação enviada com sucesso! Um consultor entrará em contato em breve.', {
         duration: 5000,
       });
-    }, 700);
+    } catch {
+      setIsSubmitting(false);
+      toast.error('Não foi possível enviar sua solicitação no momento. Verifique os dados e tente novamente.');
+    }
   };
 
   return (
