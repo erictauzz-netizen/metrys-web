@@ -121,7 +121,7 @@ export const ContactSection: FC<ContactSectionProps> = ({
               {!submitted ? (
                 <form onSubmit={handleSubmit} className="space-y-5 text-left">
                   <h3 className="text-xl font-black text-[#0A1128] border-b border-[#E2E8F0] pb-3">
-                    Solicitar Diagnóstico Comercial
+                    Solicitar Demonstração
                   </h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
