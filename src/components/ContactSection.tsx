@@ -116,7 +116,7 @@ export const ContactSection: FC<ContactSectionProps> = ({
 
           {/* Right Form Card (7 cols) */}
           <div className="lg:col-span-7">
-            <div className="rounded-2xl bg-[#F8FAFC] p-8 sm:p-10 border border-[#CBD5E1] shadow-card">
+            <div id="formulario" className="rounded-2xl bg-[#F8FAFC] p-5 sm:p-10 border border-[#CBD5E1] shadow-card scroll-mt-24">
               
               {!submitted ? (
                 <form onSubmit={handleSubmit} className="space-y-5 text-left">

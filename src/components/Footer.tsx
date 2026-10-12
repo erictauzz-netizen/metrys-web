@@ -100,7 +100,7 @@ export const Footer: FC = () => {
             <ul className="space-y-2.5 text-xs text-[#CBD7E5]">
               <li>
                 <a
-                  href="#contato"
+                  href="#formulario"
                   className="inline-flex items-center gap-1.5 text-white font-semibold hover:text-[#CBD7E5] transition-colors"
                 >
                   <span>Formulário de Contato</span>

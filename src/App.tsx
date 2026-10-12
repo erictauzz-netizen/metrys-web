@@ -17,8 +17,24 @@ export function App() {
   const [contactNotes, setContactNotes] = useState<string>('');
 
   const scrollToContact = () => {
-    const el = document.getElementById('contato');
-    el?.scrollIntoView({ behavior: 'smooth' });
+    const formCard = document.getElementById('formulario');
+    const targetEl = formCard || document.getElementById('contato');
+
+    if (targetEl) {
+      const navbarOffset = 75;
+      const elementPosition = targetEl.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navbarOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+
+      setTimeout(() => {
+        const input = targetEl.querySelector<HTMLInputElement>('input[type="text"], input');
+        input?.focus({ preventScroll: true });
+      }, 450);
+    }
   };
 
   const handleSelectSolution = (solutionId: string) => {
