@@ -56,7 +56,7 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
       id: 'flow',
       code: 'AUTOMAÇÕES',
       title: 'METRYS AUTOMAÇÕES',
-      subtitle: 'Automações e integrações',
+      subtitle: 'Integração de processos e sistemas',
       badge: 'Conexão de Processos',
       userRole: 'Gestores de Operações & Controladoria',
       image: '/images/operations-flow.jpg',
