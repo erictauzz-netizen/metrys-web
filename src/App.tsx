@@ -71,11 +71,11 @@ export function App() {
           onPillarSelect={handleSelectSolution}
         />
 
-        {/* 1b. Partner Logos Ticker — Social Proof */}
-        <PartnerLogos />
-
         {/* 2. Os 4 Banners Horizontais de Solução (Agentes IA, CRM, Automações, Software) */}
         <SolutionsPillBanners onSelectSolution={handleSelectSolution} />
+
+        {/* 2b. Partner Logos Ticker — Social Proof Infinite Marquee */}
+        <PartnerLogos />
 
         {/* 3. Casos Setoriais: Resultados Reais para Empresas Reais (Construção, Saúde, Comércio) */}
         <SegmentCasesSection onCtaClick={scrollToContact} />

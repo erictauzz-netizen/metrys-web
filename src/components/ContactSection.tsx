@@ -175,7 +175,7 @@ export const ContactSection: FC<ContactSectionProps> = ({
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           placeholder="Ex: Roberto Silva"
-                          className="w-full bg-white border border-[#CBD5E1] focus:border-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#0A1128] transition-all shadow-sm"
+                          className="w-full bg-white border border-[#CBD5E1] focus:border-transparent focus:ring-2 focus:ring-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#94A3B8] focus:outline-none transition-all shadow-sm"
                         />
                       </div>
                     </div>
@@ -192,7 +192,7 @@ export const ContactSection: FC<ContactSectionProps> = ({
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="DDD + Seu WhatsApp ou Telefone"
-                          className="w-full bg-white border border-[#CBD5E1] focus:border-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#0A1128] transition-all shadow-sm"
+                          className="w-full bg-white border border-[#CBD5E1] focus:border-transparent focus:ring-2 focus:ring-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#94A3B8] focus:outline-none transition-all shadow-sm"
                         />
                       </div>
                     </div>
@@ -210,7 +210,7 @@ export const ContactSection: FC<ContactSectionProps> = ({
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="roberto@suaempresa.com"
-                          className="w-full bg-white border border-[#CBD5E1] focus:border-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#0A1128] transition-all shadow-sm"
+                          className="w-full bg-white border border-[#CBD5E1] focus:border-transparent focus:ring-2 focus:ring-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#94A3B8] focus:outline-none transition-all shadow-sm"
                         />
                       </div>
                     </div>
@@ -226,7 +226,7 @@ export const ContactSection: FC<ContactSectionProps> = ({
                           value={company}
                           onChange={(e) => setCompany(e.target.value)}
                           placeholder="Nome da sua empresa"
-                          className="w-full bg-white border border-[#CBD5E1] focus:border-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#0A1128] transition-all shadow-sm"
+                          className="w-full bg-white border border-[#CBD5E1] focus:border-transparent focus:ring-2 focus:ring-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#94A3B8] focus:outline-none transition-all shadow-sm"
                         />
                       </div>
                     </div>
@@ -242,14 +242,14 @@ export const ContactSection: FC<ContactSectionProps> = ({
                       value={notes}
                       onChange={(e) => setNotes(e.target.value)}
                       placeholder="Ex: Gostaria de integrar nosso atendimento WhatsApp com o funil comercial e automatizar emissão de contratos e notas fiscais."
-                      className="w-full bg-white border border-[#CBD5E1] focus:border-[#0A1128] rounded-xl p-3 text-sm text-[#0A1128] placeholder-[#94A3B8] focus:outline-none focus:ring-1 focus:ring-[#0A1128] transition-all shadow-sm"
+                      className="w-full bg-white border border-[#CBD5E1] focus:border-transparent focus:ring-2 focus:ring-[#0A1128] rounded-xl p-3 text-sm text-[#0A1128] placeholder-[#94A3B8] focus:outline-none transition-all shadow-sm"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 px-6 rounded-xl font-bold text-sm uppercase tracking-wider text-white bg-[#0A1128] hover:bg-[#1E2E4A] transition-all shadow-md active:scale-95 flex items-center justify-center gap-2"
+                    className="w-full py-4 px-6 rounded-xl font-bold text-sm uppercase tracking-wider text-white bg-[#0A1128] hover:bg-[#1E2E4A] transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center gap-2">

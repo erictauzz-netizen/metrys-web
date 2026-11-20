@@ -160,7 +160,7 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.4 }}
-                className="group relative rounded-2xl bg-[#FFFFFF] overflow-hidden flex flex-col justify-between border border-[#E2E8F0] hover:border-[#CBD5E1] transition-all duration-200 shadow-card hover:shadow-card-hover"
+                className="group relative rounded-2xl bg-[#FFFFFF] overflow-hidden flex flex-col justify-between border border-[#CBD5E1] hover:border-[#0A1128] transition-all duration-200 shadow-card hover:shadow-card-hover"
               >
                 <div>
                   {/* Panoramic Photo of People Working in this Area */}

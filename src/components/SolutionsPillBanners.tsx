@@ -11,31 +11,39 @@ export const SolutionsPillBanners: FC<SolutionsPillBannersProps> = ({ onSelectSo
     {
       id: 'ai',
       title: 'Agentes de IA',
-      description: 'Atendimento, qualificação de leads, agendamentos e muito mais.',
+      badge: 'Atendimento 24/7',
+      description: 'Atendimento, qualificação instantânea de leads e agendamentos.',
       icon: Bot,
+      accent: 'from-blue-600 to-indigo-700',
     },
     {
       id: 'crm',
       title: 'Gestão Comercial',
-      description: 'CRM inteligente para organizar e acelerar suas vendas.',
+      badge: 'Funis & Pipeline',
+      description: 'CRM inteligente para organizar, prever e acelerar suas vendas.',
       icon: BarChart3,
+      accent: 'from-emerald-600 to-teal-700',
     },
     {
       id: 'flow',
       title: 'Automações',
-      description: 'Processos conectados entre equipes, sistemas e canais.',
+      badge: 'Zero Retrabalho',
+      description: 'Processos conectados entre ERPs, WhatsApp e plataformas fiscais.',
       icon: GitFork,
+      accent: 'from-amber-600 to-orange-700',
     },
     {
       id: 'systems',
       title: 'Software Sob Medida',
-      description: 'Sistemas personalizados para a realidade da sua empresa.',
+      badge: 'Engenharia Dedicada',
+      description: 'Sistemas e portais personalizados para a realidade da sua empresa.',
       icon: Code2,
+      accent: 'from-violet-600 to-purple-800',
     },
   ];
 
   return (
-    <section className="relative mt-6 sm:-mt-8 lg:-mt-10 z-20 max-w-[1520px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-8 lg:px-12">
+    <section className="relative -mt-6 sm:-mt-10 lg:-mt-12 z-20 max-w-[1520px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-8 lg:px-12">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         {items.map((item, idx) => {
           const Icon = item.icon;
@@ -45,28 +53,34 @@ export const SolutionsPillBanners: FC<SolutionsPillBannersProps> = ({ onSelectSo
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: idx * 0.08 }}
-              whileHover={{ y: -3 }}
+              whileHover={{ y: -4, scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => onSelectSolution(item.id)}
-              className="group cursor-pointer bg-white rounded-2xl p-6 border border-[#E2E8F0] shadow-sm hover:shadow-card hover:border-[#1E2E4A]/30 transition-all flex items-center justify-between gap-4 text-left"
+              className="group cursor-pointer bg-white/95 backdrop-blur-md rounded-2xl p-5 sm:p-6 border border-[#CBD5E1] shadow-card hover:shadow-card-hover hover:border-[#0A1128] transition-all duration-200 flex items-center justify-between gap-4 text-left relative overflow-hidden"
             >
-              {/* Left Round Icon */}
-              <div className="w-12 h-12 rounded-2xl bg-[#EAF2FD] border border-[#D5E5FA] flex-shrink-0 flex items-center justify-center text-[#2A60B4] group-hover:bg-[#0A1128] group-hover:text-white transition-colors">
+              {/* Top subtle highlight */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-transparent group-hover:bg-[#0A1128] transition-colors" />
+
+              {/* Left Round Icon with smooth background */}
+              <div className="w-12 h-12 rounded-2xl bg-[#F1F5F9] border border-[#CBD5E1] flex-shrink-0 flex items-center justify-center text-[#0A1128] group-hover:bg-[#0A1128] group-hover:text-white transition-colors duration-200">
                 <Icon className="w-5 h-5 stroke-[2]" />
               </div>
 
               {/* Middle Text */}
               <div className="flex-1 min-w-0 pr-1">
-                <h3 className="text-sm font-black text-[#0A1128] tracking-tight group-hover:text-[#1E2E4A] transition-colors">
-                  {item.title}
-                </h3>
-                <p className="text-[11px] text-[#64748B] leading-snug mt-1 line-clamp-2">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <h3 className="text-sm font-black text-[#0A1128] tracking-tight group-hover:text-[#1E2E4A] transition-colors">
+                    {item.title}
+                  </h3>
+                </div>
+                <p className="text-[11px] text-[#64748B] leading-snug line-clamp-2">
                   {item.description}
                 </p>
               </div>
 
               {/* Right Circular Arrow Button */}
-              <div className="w-8 h-8 rounded-full bg-[#EAF2FD] flex-shrink-0 flex items-center justify-center text-[#2A60B4] group-hover:bg-[#0A1128] group-hover:text-white transition-colors">
-                <ArrowRight className="w-3.5 h-3.5" />
+              <div className="w-8 h-8 rounded-full bg-[#F1F5F9] border border-[#E2E8F0] flex-shrink-0 flex items-center justify-center text-[#475569] group-hover:bg-[#0A1128] group-hover:text-white group-hover:border-transparent transition-all duration-200">
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
               </div>
             </motion.div>
           );
