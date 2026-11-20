@@ -32,6 +32,12 @@ export const ContactSection: FC<ContactSectionProps> = ({
       return;
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email.trim() && !emailRegex.test(email.trim())) {
+      toast.error('O e-mail informado não é válido. Verifique e tente novamente.');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {

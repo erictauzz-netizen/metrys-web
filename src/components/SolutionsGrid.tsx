@@ -200,7 +200,7 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
 
                     {/* Tagline */}
                     <p className="text-sm font-semibold text-[#2A4365] italic border-l-2 border-[#2A4365] pl-3">
-                      "{sol.tagline}"
+                      &#8220;{sol.tagline}&#8221;
                     </p>
 
                     {/* Body description */}

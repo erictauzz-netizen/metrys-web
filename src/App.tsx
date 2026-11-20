@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Toaster } from 'sonner';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
+import { PartnerLogos } from './components/PartnerLogos';
 import { SolutionsPillBanners } from './components/SolutionsPillBanners';
 import { SegmentCasesSection } from './components/SegmentCasesSection';
 import { SolutionsGrid } from './components/SolutionsGrid';
@@ -69,6 +70,9 @@ export function App() {
           onOpenContact={scrollToContact}
           onPillarSelect={handleSelectSolution}
         />
+
+        {/* 1b. Partner Logos Ticker — Social Proof */}
+        <PartnerLogos />
 
         {/* 2. Os 4 Banners Horizontais de Solução (Agentes IA, CRM, Automações, Software) */}
         <SolutionsPillBanners onSelectSolution={handleSelectSolution} />

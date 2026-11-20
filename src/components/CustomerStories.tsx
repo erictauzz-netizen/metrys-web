@@ -89,7 +89,7 @@ export const CustomerStories: FC = () => {
                 </div>
 
                 <h3 className="text-base font-bold text-[#0A1128]">
-                  "{t.tagline}"
+                  &#8220;{t.tagline}&#8221;
                 </h3>
 
                 <p className="text-xs sm:text-sm text-[#52667D] leading-relaxed">
