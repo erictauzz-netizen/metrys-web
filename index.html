@@ -20,17 +20,66 @@
     <meta name="twitter:image" content="https://metrys.com.br/images/hero-systems-integrated.png" />
     <!-- Canonical -->
     <link rel="canonical" href="https://metrys.com.br/" />
-    <!-- Structured Data JSON-LD -->
+    <!-- Structured Data JSON-LD (Organization & FAQPage) -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "METRYS",
-      "url": "https://metrys.com.br",
-      "description": "Ecossistema corporativo com inteligência artificial: CRM, Agentes IA, Automações e Sistemas Sob Medida.",
-      "areaServed": "BR",
-      "serviceType": ["CRM", "Inteligência Artificial", "Automação de Processos", "Desenvolvimento de Software"]
-    }
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "METRYS",
+        "url": "https://metrys.com.br",
+        "logo": "https://metrys.com.br/favicon.svg",
+        "description": "Ecossistema corporativo com inteligência artificial: CRM, Agentes IA, Automações e Sistemas Sob Medida.",
+        "areaServed": "BR",
+        "serviceType": ["CRM", "Inteligência Artificial", "Automação de Processos", "Desenvolvimento de Software"]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "A inteligência artificial vai substituir meus colaboradores?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Não. Nosso objetivo é libertar seus profissionais do trabalho braçal e repetitivo. Com a Metrys, sua equipe tem tempo para conversar com clientes, negociar melhores margens e fechar contratos."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Preciso trocar o meu ERP, CRM ou WhatsApp atual para usar a Metrys?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Não. O ecossistema Metrys foi projetado para conviver e potencializar o que sua empresa já utiliza, conectando seu WhatsApp corporativo a sistemas como Bling, Omie, Totvs, SAP ou RD Station."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como é garantida a segurança dos dados e o cumprimento da LGPD?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Toda a infraestrutura opera com isolamento rigoroso por empresa (Zero-Data-Leak). Seus dados nunca são compartilhados nem usados para treinar modelos públicos abertos. Cumprimos integralmente a LGPD com criptografia AES-256 e logs auditáveis."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Quanto tempo leva para ver a solução funcionando na minha empresa?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O tempo de implantação dos agentes de atendimento e fluxos essenciais de CRM varia tipicamente entre 5 e 15 dias úteis, com homologação assistida antes da produção."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Minha equipe terá suporte se tiver dúvidas após a implantação?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sim. Você conta com canal direto via WhatsApp com seu gerente de conta dedicado e equipe de engenharia para tirar dúvidas e realizar treinamentos."
+            }
+          }
+        ]
+      }
+    ]
     </script>
     <!-- Google Fonts: Modern Corporate Pair (Outfit + Plus Jakarta Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

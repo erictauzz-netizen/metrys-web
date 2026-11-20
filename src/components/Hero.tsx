@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, MessageSquare, ShieldCheck, Users, Cpu, Headphones } from 'lucide-react';
+import { ArrowRight, MessageSquare, ShieldCheck, Users, Cpu, Headphones, TrendingUp, Zap, Clock } from 'lucide-react';
+import { AnimatedCounter } from './AnimatedCounter';
 
 interface HeroProps {
   onOpenContact: () => void;
@@ -11,10 +12,10 @@ export const Hero: FC<HeroProps> = ({ onOpenContact }) => {
   return (
     <section className="relative pt-24 pb-12 sm:pt-28 sm:pb-16 lg:pt-32 lg:pb-20 bg-[#F4F7FC] border-b border-[#E2E8F0] overflow-hidden">
       
-      {/* Background Soft Blue Ambient Glows */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-[#1E2E4A]/10 via-[#476994]/5 to-transparent rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/3 w-[450px] h-[300px] bg-blue-100/40 rounded-full blur-3xl" />
+      {/* Background Soft Blue Ambient Glows & Grid Pattern */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-subtle-grid opacity-70">
+        <div className="absolute top-1/4 right-0 w-[650px] h-[650px] bg-gradient-to-bl from-[#1E2E4A]/12 via-[#476994]/8 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/4 w-[500px] h-[350px] bg-blue-200/30 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-[1520px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-8 lg:px-12">
@@ -73,8 +74,35 @@ export const Hero: FC<HeroProps> = ({ onOpenContact }) => {
               </motion.button>
             </div>
 
+            {/* Social Proof Quick Counters Grid */}
+            <div className="pt-3 grid grid-cols-3 gap-3 border-t border-[#CBD5E1]/60">
+              <div className="bg-white/90 backdrop-blur-sm p-3 rounded-xl border border-[#E2E8F0] shadow-sm">
+                <div className="flex items-center gap-1.5 text-xs text-emerald-600 font-bold mb-0.5">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  <AnimatedCounter from={0} to={42} prefix="+" suffix="%" className="text-base sm:text-lg font-black text-[#0A1128]" />
+                </div>
+                <span className="text-[10px] text-[#64748B] font-semibold block leading-tight">Taxa de Conversão</span>
+              </div>
+
+              <div className="bg-white/90 backdrop-blur-sm p-3 rounded-xl border border-[#E2E8F0] shadow-sm">
+                <div className="flex items-center gap-1.5 text-xs text-blue-600 font-bold mb-0.5">
+                  <Zap className="w-3.5 h-3.5" />
+                  <AnimatedCounter from={10} to={1.8} decimals={1} prefix="< " suffix="s" duration={1.2} className="text-base sm:text-lg font-black text-[#0A1128]" />
+                </div>
+                <span className="text-[10px] text-[#64748B] font-semibold block leading-tight">Resposta com IA</span>
+              </div>
+
+              <div className="bg-white/90 backdrop-blur-sm p-3 rounded-xl border border-[#E2E8F0] shadow-sm">
+                <div className="flex items-center gap-1.5 text-xs text-indigo-600 font-bold mb-0.5">
+                  <Clock className="w-3.5 h-3.5" />
+                  <AnimatedCounter from={0} to={140} suffix="h+" className="text-base sm:text-lg font-black text-[#0A1128]" />
+                </div>
+                <span className="text-[10px] text-[#64748B] font-semibold block leading-tight">Salvas por Mês</span>
+              </div>
+            </div>
+
             {/* 4 Guarantees Trust Indicators (Grid 2x2) */}
-            <div className="pt-4 border-t border-[#CBD5E1]/60 grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs font-semibold text-[#475569]">
+            <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-semibold text-[#475569]">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-[#0A1128] flex-shrink-0" />
                 <span>100% Adequado à LGPD e Sigilo sob NDA</span>
