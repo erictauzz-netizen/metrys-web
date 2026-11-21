@@ -1,0 +1,42 @@
+name: CRM Health Keep-Alive
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check METRYS CRM Health Endpoint
+        run: |
+          set -euo pipefail
+          tmp_body="$(mktemp)"
+          http_code="$(curl -sS --max-time 20 -o "$tmp_body" -w '%{http_code}' 'https://metrys.com.br/api/health')"
+          echo "HTTP status: $http_code"
+          node -e '
+            const fs = require("fs");
+            const code = Number(process.argv[1]);
+            const raw = fs.readFileSync(process.argv[2], "utf8");
+            let parsed = null;
+            try {
+              parsed = JSON.parse(raw);
+            } catch {
+              console.error("Health endpoint returned non-JSON response");
+              process.exit(1);
+            }
+            console.log(JSON.stringify({
+              http_code: code,
+              status: parsed.status ?? null,
+              active_source: parsed.active_source ?? null,
+              db_latency_ms: parsed.db_latency_ms ?? null,
+              reason: parsed.reason ?? null,
+              timestamp: parsed.timestamp ?? null,
+            }));
+            if (code !== 200 || parsed.status !== "ok") {
+              console.error("METRYS CRM health check failed");
+              process.exit(1);
+            }
+          ' "$http_code" "$tmp_body"

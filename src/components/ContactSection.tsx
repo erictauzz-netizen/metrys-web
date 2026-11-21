@@ -1,10 +1,191 @@
-import { useState, useEffect, type FC, type FormEvent } from 'react';
+import { useState, useEffect, useRef, useCallback, type FC, type FormEvent } from 'react';
 import { toast } from 'sonner';
-import { Send, Phone, Mail, Building2, User, Sparkles, CheckCircle, ShieldCheck } from 'lucide-react';
+import {
+  Send,
+  Phone,
+  Mail,
+  Building2,
+  User,
+  Sparkles,
+  CheckCircle,
+  ShieldCheck,
+  RefreshCw,
+  AlertTriangle,
+  Copy,
+  Check,
+  ExternalLink,
+} from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface ContactSectionProps {
   initialNotes?: string;
+}
+
+interface PendingLeadPayload {
+  nome: string;
+  telefone: string;
+  email?: string;
+  empresa?: string;
+  mensagem?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_term?: string;
+  utm_content?: string;
+}
+
+interface PendingLeadRecord {
+  id: string;
+  payload: PendingLeadPayload;
+  createdAt: string;
+  attempts: number;
+  lastError: string | null;
+}
+
+type PostLeadOutcome =
+  | { status: 'ok'; leadId: string }
+  | { status: 'validation_error'; message: string }
+  | { status: 'retryable_error'; message: string };
+
+const PENDING_LEAD_STORAGE_KEY = 'metrys_pending_lead_v1';
+const CLIENT_SUBMIT_TIMEOUT_MS = 15000;
+const AUTO_RETRY_INTERVAL_MS = 15000;
+const FOCUS_RETRY_COOLDOWN_MS = 3000;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const FALLBACK_WHATSAPP = ((import.meta.env.VITE_METRYS_FALLBACK_WHATSAPP as string | undefined) || '').trim();
+const FALLBACK_EMAIL = ((import.meta.env.VITE_METRYS_FALLBACK_EMAIL as string | undefined) || '').trim();
+
+function readPendingLead(): PendingLeadRecord | null {
+  try {
+    const raw = window.localStorage.getItem(PENDING_LEAD_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<PendingLeadRecord>;
+    if (
+      !parsed ||
+      typeof parsed.id !== 'string' ||
+      !parsed.id ||
+      !parsed.payload ||
+      typeof parsed.payload !== 'object'
+    ) {
+      return null;
+    }
+    const nome = typeof parsed.payload.nome === 'string' ? parsed.payload.nome.trim() : '';
+    const telefone = typeof parsed.payload.telefone === 'string' ? parsed.payload.telefone.trim() : '';
+    const email = typeof parsed.payload.email === 'string' ? parsed.payload.email.trim() : '';
+    if (!nome && !telefone && !email) return null;
+    return {
+      id: parsed.id,
+      payload: parsed.payload as PendingLeadPayload,
+      createdAt: typeof parsed.createdAt === 'string' ? parsed.createdAt : new Date().toISOString(),
+      attempts: typeof parsed.attempts === 'number' && Number.isFinite(parsed.attempts) ? parsed.attempts : 0,
+      lastError: typeof parsed.lastError === 'string' ? parsed.lastError : null,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function writePendingLead(record: PendingLeadRecord): void {
+  try {
+    window.localStorage.setItem(PENDING_LEAD_STORAGE_KEY, JSON.stringify(record));
+  } catch {
+    // Ignore storage quota or private-mode restrictions
+  }
+}
+
+function clearPendingLead(): void {
+  try {
+    window.localStorage.removeItem(PENDING_LEAD_STORAGE_KEY);
+  } catch {
+    // Ignore storage restrictions
+  }
+}
+
+function createLeadId(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return `lead_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function formatLeadSummary(record: PendingLeadRecord): string {
+  const lines = [
+    `Protocolo local: ${record.id}`,
+    `Nome: ${record.payload.nome || '-'}`,
+    `Telefone/WhatsApp: ${record.payload.telefone || '-'}`,
+  ];
+  if (record.payload.email) lines.push(`E-mail: ${record.payload.email}`);
+  if (record.payload.empresa) lines.push(`Empresa: ${record.payload.empresa}`);
+  if (record.payload.mensagem) lines.push(`Necessidade: ${record.payload.mensagem}`);
+  return lines.join('\n');
+}
+
+async function postLeadToApi(record: PendingLeadRecord): Promise<PostLeadOutcome> {
+  const webhookUrl =
+    (import.meta.env.VITE_METRYS_CRM_WEBHOOK_URL as string | undefined) || '/api/lead';
+
+  const bodyParams = new URLSearchParams();
+  bodyParams.set('external_id', record.id);
+  bodyParams.set('nome', record.payload.nome);
+  bodyParams.set('telefone', record.payload.telefone);
+  if (record.payload.email) bodyParams.set('email', record.payload.email);
+  if (record.payload.empresa) bodyParams.set('empresa', record.payload.empresa);
+  if (record.payload.mensagem) bodyParams.set('mensagem', record.payload.mensagem);
+
+  for (const utmKey of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const) {
+    const val = record.payload[utmKey];
+    if (val) bodyParams.set(utmKey, val);
+  }
+
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), CLIENT_SUBMIT_TIMEOUT_MS);
+
+  try {
+    const res = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+      body: bodyParams.toString(),
+      signal: controller.signal,
+    });
+
+    const payloadResult = await res.json().catch(() => null);
+
+    if (res.ok && payloadResult?.data?.lead_id) {
+      return { status: 'ok', leadId: String(payloadResult.data.lead_id) };
+    }
+
+    if ((res.status === 400 || res.status === 422) && payloadResult?.retryable !== true) {
+      return {
+        status: 'validation_error',
+        message:
+          typeof payloadResult?.error === 'string' && payloadResult.error
+            ? payloadResult.error
+            : 'Verifique os dados informados e tente novamente.',
+      };
+    }
+
+    return {
+      status: 'retryable_error',
+      message:
+        typeof payloadResult?.error === 'string' && payloadResult.error
+          ? payloadResult.error
+          : `Falha temporária ao conectar com o CRM (HTTP ${res.status})`,
+    };
+  } catch (err) {
+    const message =
+      err instanceof Error && err.name === 'AbortError'
+        ? 'Tempo limite excedido ao conectar com o CRM'
+        : 'Falha de conexão com o servidor';
+    return {
+      status: 'retryable_error',
+      message,
+    };
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
 }
 
 export const ContactSection: FC<ContactSectionProps> = ({
@@ -17,12 +198,146 @@ export const ContactSection: FC<ContactSectionProps> = ({
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [pendingLead, setPendingLead] = useState<PendingLeadRecord | null>(null);
+  const [isRetrying, setIsRetrying] = useState(false);
+  const [copiedSummary, setCopiedSummary] = useState(false);
+
+  const isFlushingRef = useRef(false);
+  const lastAttemptAtRef = useRef(0);
 
   useEffect(() => {
     if (initialNotes) {
-      setNotes(initialNotes);
+      setNotes((prev) => prev || initialNotes);
     }
   }, [initialNotes]);
+
+  const triggerSuccessUx = useCallback((leadName: string, wasAutoFlush: boolean) => {
+    clearPendingLead();
+    setPendingLead(null);
+    setName((prev) => prev || leadName);
+    setIsSubmitting(false);
+    setIsRetrying(false);
+    setSubmitted(true);
+    confetti({
+      particleCount: 60,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#0A1128', '#2A4365', '#1E2E4A', '#6B82A0', '#CBD7E5'],
+    });
+    toast.success(
+      wasAutoFlush
+        ? 'Solicitação confirmada e enviada ao CRM! Um consultor entrará em contato em breve.'
+        : 'Solicitação enviada com sucesso! Um consultor entrará em contato em breve.',
+      { duration: 5000 }
+    );
+  }, []);
+
+  const attemptSend = useCallback(
+    async (
+      record: PendingLeadRecord,
+      options: { silentOnRetryableError: boolean; source: 'submit' | 'manual' | 'auto' }
+    ) => {
+      if (isFlushingRef.current) return;
+
+      isFlushingRef.current = true;
+      lastAttemptAtRef.current = Date.now();
+      if (options.source === 'submit') {
+        setIsSubmitting(true);
+      } else {
+        setIsRetrying(true);
+      }
+
+      writePendingLead(record);
+
+      try {
+        const result = await postLeadToApi(record);
+
+        if (result.status === 'ok') {
+          triggerSuccessUx(record.payload.nome, options.source === 'auto');
+          return;
+        }
+
+        if (result.status === 'validation_error') {
+          clearPendingLead();
+          setPendingLead(null);
+          toast.error(result.message);
+          return;
+        }
+
+        const updatedRecord: PendingLeadRecord = {
+          ...record,
+          attempts: record.attempts + 1,
+          lastError: result.message,
+        };
+        writePendingLead(updatedRecord);
+        setPendingLead(updatedRecord);
+
+        if (!options.silentOnRetryableError) {
+          toast.error(
+            'Instabilidade temporária ao enviar. Seus dados foram salvos localmente para reenvio automático.'
+          );
+        }
+      } finally {
+        isFlushingRef.current = false;
+        setIsSubmitting(false);
+        setIsRetrying(false);
+      }
+    },
+    [triggerSuccessUx]
+  );
+
+  useEffect(() => {
+    const saved = readPendingLead();
+    if (!saved) return;
+
+    setPendingLead(saved);
+    setName((prev) => prev || saved.payload.nome || '');
+    setPhone((prev) => prev || saved.payload.telefone || '');
+    setEmail((prev) => prev || saved.payload.email || '');
+    setCompany((prev) => prev || saved.payload.empresa || '');
+    if (saved.payload.mensagem) {
+      setNotes(saved.payload.mensagem);
+    }
+
+    if (typeof navigator === 'undefined' || navigator.onLine !== false) {
+      void attemptSend(saved, { silentOnRetryableError: true, source: 'auto' });
+    }
+  }, [attemptSend]);
+
+  useEffect(() => {
+    if (!pendingLead || submitted) return;
+
+    const tryFlush = (respectCooldown: boolean) => {
+      if (isFlushingRef.current) return;
+      if (typeof navigator !== 'undefined' && navigator.onLine === false) return;
+      if (respectCooldown && Date.now() - lastAttemptAtRef.current < FOCUS_RETRY_COOLDOWN_MS) {
+        return;
+      }
+      const latest = readPendingLead() || pendingLead;
+      if (!latest) return;
+      void attemptSend(latest, { silentOnRetryableError: true, source: 'auto' });
+    };
+
+    const handleOnline = () => tryFlush(false);
+    const handleFocus = () => tryFlush(true);
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        tryFlush(true);
+      }
+    };
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleVisibility);
+    const intervalId = window.setInterval(() => tryFlush(false), AUTO_RETRY_INTERVAL_MS);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.clearInterval(intervalId);
+    };
+  }, [pendingLead, submitted, attemptSend]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -32,60 +347,74 @@ export const ContactSection: FC<ContactSectionProps> = ({
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (email.trim() && !emailRegex.test(email.trim())) {
+    if (email.trim() && !EMAIL_REGEX.test(email.trim())) {
       toast.error('O e-mail informado não é válido. Verifique e tente novamente.');
       return;
     }
 
-    setIsSubmitting(true);
+    const searchParams = new URLSearchParams(window.location.search);
+    const payload: PendingLeadPayload = {
+      nome: name.trim(),
+      telefone: phone.trim(),
+      ...(email.trim() ? { email: email.trim() } : {}),
+      ...(company.trim() ? { empresa: company.trim() } : {}),
+      ...(notes.trim() ? { mensagem: notes.trim() } : {}),
+    };
 
+    for (const utmKey of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const) {
+      const val = searchParams.get(utmKey);
+      if (val) payload[utmKey] = val;
+    }
+
+    const record: PendingLeadRecord = {
+      id: pendingLead?.id || createLeadId(),
+      payload,
+      createdAt: pendingLead?.createdAt || new Date().toISOString(),
+      attempts: pendingLead?.attempts || 0,
+      lastError: null,
+    };
+
+    await attemptSend(record, { silentOnRetryableError: false, source: 'submit' });
+  };
+
+  const handleCopySummary = async () => {
+    if (!pendingLead) return;
+    const summary = formatLeadSummary(pendingLead);
     try {
-      const webhookUrl =
-        (import.meta.env.VITE_METRYS_CRM_WEBHOOK_URL as string | undefined) || '/api/lead';
-
-      const searchParams = new URLSearchParams(window.location.search);
-      const formPayload = new URLSearchParams();
-      formPayload.set('nome', name.trim());
-      formPayload.set('telefone', phone.trim());
-      if (email.trim()) formPayload.set('email', email.trim());
-      if (company.trim()) formPayload.set('empresa', company.trim());
-      if (notes.trim()) formPayload.set('mensagem', notes.trim());
-
-      for (const utmKey of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']) {
-        const val = searchParams.get(utmKey);
-        if (val) formPayload.set(utmKey, val);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(summary);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = summary;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
       }
-
-      const res = await fetch(webhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-        },
-        body: formPayload.toString(),
-      });
-
-      const payloadResult = await res.json().catch(() => null);
-      if (!res.ok || !payloadResult?.data?.lead_id) {
-        throw new Error('Falha ao confirmar criação do lead no CRM');
-      }
-
-      setIsSubmitting(false);
-      setSubmitted(true);
-      confetti({
-        particleCount: 60,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#0A1128', '#2A4365', '#1E2E4A', '#6B82A0', '#CBD7E5'],
-      });
-      toast.success('Solicitação enviada com sucesso! Um consultor entrará em contato em breve.', {
-        duration: 5000,
-      });
+      setCopiedSummary(true);
+      toast.success('Resumo dos dados copiado para a área de transferência.');
+      window.setTimeout(() => setCopiedSummary(false), 3000);
     } catch {
-      setIsSubmitting(false);
-      toast.error('Não foi possível enviar sua solicitação no momento. Verifique os dados e tente novamente.');
+      toast.error('Não foi possível copiar automaticamente. Seus dados continuam salvos no formulário.');
     }
   };
+
+  const whatsappDigits = FALLBACK_WHATSAPP.replace(/\D/g, '');
+  const fallbackWhatsAppHref =
+    pendingLead && whatsappDigits
+      ? `https://wa.me/${whatsappDigits}?text=${encodeURIComponent(
+          `Olá, equipe METRYS! Gostaria de agendar uma demonstração.\n\n${formatLeadSummary(pendingLead)}`
+        )}`
+      : null;
+
+  const fallbackEmailHref =
+    pendingLead && FALLBACK_EMAIL
+      ? `mailto:${FALLBACK_EMAIL}?subject=${encodeURIComponent(
+          `Solicitação de Demonstração — ${pendingLead.payload.empresa || pendingLead.payload.nome}`
+        )}&body=${encodeURIComponent(formatLeadSummary(pendingLead))}`
+      : null;
 
   return (
     <section id="contato" className="py-24 relative bg-white border-b border-[#E2E8F0]">
@@ -161,6 +490,88 @@ export const ContactSection: FC<ContactSectionProps> = ({
                   <h3 className="text-xl font-black text-[#0A1128] border-b border-[#E2E8F0] pb-3">
                     Solicitar Demonstração
                   </h3>
+
+                  {pendingLead !== null && (
+                    <div
+                      data-testid="lead-recovery-banner"
+                      role="status"
+                      aria-live="polite"
+                      className="rounded-xl border border-amber-300 bg-amber-50/90 p-4 text-left space-y-3"
+                    >
+                      <div className="flex items-start gap-3">
+                        <AlertTriangle className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
+                        <div className="space-y-1">
+                          <p className="text-sm font-bold text-[#0A1128]">
+                            Solicitação salva localmente — reenvio automático ativo
+                          </p>
+                          <p className="text-xs text-[#52667D] leading-relaxed">
+                            Houve uma instabilidade temporária ao conectar com nosso servidor. Seus dados não foram perdidos e serão reenviados automaticamente assim que a conexão estabilizar.
+                          </p>
+                          <p className="text-[11px] font-medium text-amber-900">
+                            Tentativas registradas: {pendingLead.attempts}
+                            {isRetrying ? ' • Tentando reenviar agora...' : ''}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-2 pt-1">
+                        <button
+                          type="button"
+                          disabled={isSubmitting || isRetrying}
+                          onClick={() =>
+                            void attemptSend(pendingLead, {
+                              silentOnRetryableError: false,
+                              source: 'manual',
+                            })
+                          }
+                          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-white bg-[#0A1128] hover:bg-[#1E2E4A] disabled:opacity-60 transition-all"
+                        >
+                          <RefreshCw className={`w-3.5 h-3.5 ${isRetrying ? 'animate-spin' : ''}`} />
+                          Tentar reenviar agora
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => void handleCopySummary()}
+                          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-[#0A1128] bg-white border border-[#CBD5E1] hover:bg-[#F1F5F9] transition-all"
+                        >
+                          {copiedSummary ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 text-emerald-600" />
+                              Resumo copiado
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5" />
+                              Copiar resumo dos dados
+                            </>
+                          )}
+                        </button>
+
+                        {fallbackWhatsAppHref && (
+                          <a
+                            href={fallbackWhatsAppHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-[#0A1128] bg-white border border-[#CBD5E1] hover:bg-[#F1F5F9] transition-all"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            Enviar via WhatsApp
+                          </a>
+                        )}
+
+                        {fallbackEmailHref && (
+                          <a
+                            href={fallbackEmailHref}
+                            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-[#0A1128] bg-white border border-[#CBD5E1] hover:bg-[#F1F5F9] transition-all"
+                          >
+                            <Mail className="w-3.5 h-3.5" />
+                            Enviar por e-mail
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  )}
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
