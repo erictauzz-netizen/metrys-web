@@ -579,6 +579,32 @@ export default async function handler(req, res) {
       }
     }
 
+    // 6. Sincronização direta com o Funil de Vendas Kanban (novo-crm-vercel)
+    try {
+      const crmWebhookUrl = process.env.KANBAN_CRM_WEBHOOK_URL || 'https://novo-crm-vercel.vercel.app/api/api/v1/leads';
+      const crmPayload = {
+        name: rawName || phoneE164 || rawEmail || 'Novo Lead',
+        phone: phoneE164 || rawPhone || undefined,
+        email: rawEmail || undefined,
+        company: rawEmpresa || undefined,
+        title: leadTitle,
+        source: 'Site METRYS',
+        notes: rawMensagem ? `Mensagem do site:\n${rawMensagem}` : 'Lead capturado via formulário oficial metrys.com.br',
+      };
+
+      await fetchWithTimeout(
+        crmWebhookUrl,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(crmPayload),
+        },
+        TELEMETRY_TIMEOUT_MS
+      );
+    } catch (crmSyncErr) {
+      console.warn('[api/lead] Aviso sincronização Kanban CRM:', crmSyncErr.message);
+    }
+
     return res.status(200).json({
       data: {
         lead_id: lead.id,
