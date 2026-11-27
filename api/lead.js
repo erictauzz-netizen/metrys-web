@@ -308,8 +308,28 @@ async function resolveOrCreateContact({ supabaseUrl, headers, orgId, sourceId, r
   return null;
 }
 
+const ALLOWED_ORIGINS = [
+  'https://metrys.com.br',
+  'https://www.metrys.com.br',
+  'http://localhost:3000',
+  'http://localhost:3003',
+  'http://localhost:5173',
+];
+
+function isOriginAllowed(origin) {
+  if (!origin) return false;
+  if (ALLOWED_ORIGINS.includes(origin)) return true;
+  return /^https:\/\/[a-z0-9-]+(?:\.[a-z0-9-]+)?\.vercel\.app$/i.test(origin);
+}
+
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const origin = getHeader(req, 'origin');
+  if (origin && isOriginAllowed(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+  } else if (!origin) {
+    res.setHeader('Access-Control-Allow-Origin', 'https://metrys.com.br');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -324,11 +344,25 @@ export default async function handler(req, res) {
   try {
     const body = parseBody(req);
 
+    // Proteção Anti-Spam (Honeypot)
+    const honeypot = body.website_url_confirm || body._gotcha || body.honeypot;
+    if (typeof honeypot === 'string' && honeypot.trim() !== '') {
+      return res.status(200).json({
+        data: {
+          lead_id: 'bot_discarded',
+          mode: 'discarded',
+        },
+      });
+    }
+
     const rawName = String(body.nome || body.name || '').trim();
     const rawPhone = String(body.telefone || body.phone || body.whatsapp || '').trim();
     const rawEmail = String(body.email || '').trim().toLowerCase() || null;
     const rawEmpresa = String(body.empresa || body.company || '').trim();
     const rawMensagem = String(body.mensagem || body.notes || '').trim();
+    const landingPage = typeof body.landing_page === 'string' ? body.landing_page.trim().slice(0, 500) : null;
+    const initialReferrer = typeof body.initial_referrer === 'string' ? body.initial_referrer.trim().slice(0, 500) : null;
+    const pillarInterest = typeof body.pillar_interest === 'string' ? body.pillar_interest.trim().slice(0, 100) : null;
     const externalId =
       typeof body.external_id === 'string' && body.external_id.trim()
         ? body.external_id.trim().slice(0, 255)
@@ -375,8 +409,18 @@ export default async function handler(req, res) {
         ...(rawPhone ? { telefone: rawPhone } : {}),
         ...(rawEmail ? { email: rawEmail } : {}),
         ...(rawEmpresa ? { empresa: rawEmpresa } : {}),
-        ...(rawMensagem ? { mensagem: rawMensagem } : {}),
+        mensagem: [
+          rawMensagem,
+          pillarInterest ? `[Interesse: ${pillarInterest}]` : null,
+          landingPage ? `[Página: ${landingPage}]` : null,
+          initialReferrer && initialReferrer !== 'direto' ? `[Referrer: ${initialReferrer}]` : null,
+        ]
+          .filter(Boolean)
+          .join(' | '),
         external_id: externalId,
+        ...(landingPage ? { landing_page: landingPage } : {}),
+        ...(initialReferrer ? { initial_referrer: initialReferrer } : {}),
+        ...(pillarInterest ? { pillar_interest: pillarInterest } : {}),
         ...utm,
       };
 
@@ -472,10 +516,16 @@ export default async function handler(req, res) {
     const customFields = {};
     if (rawEmpresa) customFields.empresa = rawEmpresa;
     if (rawMensagem) customFields.mensagem = rawMensagem;
+    if (landingPage) customFields.landing_page = landingPage;
+    if (initialReferrer) customFields.initial_referrer = initialReferrer;
+    if (pillarInterest) customFields.pillar_interest = pillarInterest;
 
     const sourceMetadata = {
       ...utm,
       webhook_source_id: source.id,
+      ...(landingPage ? { landing_page: landingPage } : {}),
+      ...(initialReferrer ? { initial_referrer: initialReferrer } : {}),
+      ...(pillarInterest ? { pillar_interest: pillarInterest } : {}),
       ...(rawPhone && !phoneE164 ? { raw_phone: rawPhone } : {}),
     };
 

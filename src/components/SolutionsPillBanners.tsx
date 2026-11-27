@@ -15,6 +15,7 @@ export const SolutionsPillBanners: FC<SolutionsPillBannersProps> = ({ onSelectSo
       description: 'Atendimento, qualificação instantânea de leads e agendamentos.',
       icon: Bot,
       accent: 'from-blue-600 to-indigo-700',
+      href: '/solucoes/agentes-ia-whatsapp-voz',
     },
     {
       id: 'crm',
@@ -23,6 +24,7 @@ export const SolutionsPillBanners: FC<SolutionsPillBannersProps> = ({ onSelectSo
       description: 'CRM inteligente para organizar, prever e acelerar suas vendas.',
       icon: BarChart3,
       accent: 'from-emerald-600 to-teal-700',
+      href: '/solucoes/crm-b2b',
     },
     {
       id: 'flow',
@@ -31,6 +33,7 @@ export const SolutionsPillBanners: FC<SolutionsPillBannersProps> = ({ onSelectSo
       description: 'Processos conectados entre ERPs, WhatsApp e plataformas fiscais.',
       icon: GitFork,
       accent: 'from-amber-600 to-orange-700',
+      href: '/solucoes/automacoes-integracoes-erp',
     },
     {
       id: 'systems',
@@ -39,11 +42,13 @@ export const SolutionsPillBanners: FC<SolutionsPillBannersProps> = ({ onSelectSo
       description: 'Sistemas e portais personalizados para a realidade da sua empresa.',
       icon: Code2,
       accent: 'from-violet-600 to-purple-800',
+      href: '/solucoes/software-sob-medida',
     },
   ];
 
   return (
     <section className="relative -mt-6 sm:-mt-10 lg:-mt-12 z-20 max-w-[1520px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-8 lg:px-12">
+      <h2 className="sr-only">Módulos e Soluções do Ecossistema METRYS</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         {items.map((item, idx) => {
           const Icon = item.icon;

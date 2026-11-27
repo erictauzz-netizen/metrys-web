@@ -2,44 +2,32 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://metrys.com.br/</loc>
-    <lastmod>2026-11-20</lastmod>
+    <lastmod>2026-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://metrys.com.br/#solucoes</loc>
-    <lastmod>2026-11-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://metrys.com.br/solucoes/crm-b2b</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://metrys.com.br/#metodologia</loc>
-    <lastmod>2026-11-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://metrys.com.br/solucoes/agentes-ia-whatsapp-voz</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://metrys.com.br/#historias</loc>
-    <lastmod>2026-11-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://metrys.com.br/solucoes/automacoes-integracoes-erp</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://metrys.com.br/#seguranca</loc>
-    <lastmod>2026-11-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://metrys.com.br/#faq</loc>
-    <lastmod>2026-11-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://metrys.com.br/#formulario</loc>
-    <lastmod>2026-11-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://metrys.com.br/solucoes/software-sob-medida</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 </urlset>

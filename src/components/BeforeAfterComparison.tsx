@@ -35,7 +35,7 @@ export const BeforeAfterComparison: FC<BeforeAfterComparisonProps> = ({ onCtaCli
       after: {
         tag: 'Previsibilidade e follow-up automático',
         text: 'Metrys CRM dispara lembretes inteligentes, pontua clientes por propensão de compra e mantém o funil 100% atualizado.',
-        metric: '+42% de conversão nas propostas',
+        metric: '100% de follow-up em propostas ativas',
       },
     },
     {
@@ -228,9 +228,9 @@ export const BeforeAfterComparison: FC<BeforeAfterComparisonProps> = ({ onCtaCli
         {/* Human Touch Callout */}
         <div className="mt-12 p-6 sm:p-8 rounded-2xl bg-[#F8FAFC] border border-[#CBD5E1] shadow-card flex flex-col sm:flex-row items-center justify-between gap-6 text-left">
           <div className="space-y-1.5 max-w-2xl">
-            <h4 className="text-lg font-black text-[#0A1128]">
+            <h3 className="text-lg font-black text-[#0A1128]">
               Pronto para migrar sua empresa para uma operação inteligente?
-            </h4>
+            </h3>
             <p className="text-xs sm:text-sm text-[#52667D]">
               Nossa equipe faz todo o trabalho pesado de parametrização técnica, integração com seus ERPs e treinamento direto dos seus colaboradores.
             </p>

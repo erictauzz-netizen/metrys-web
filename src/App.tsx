@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Toaster } from 'sonner';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -13,9 +13,51 @@ import { SecurityAndCompliance } from './components/SecurityAndCompliance';
 import { FaqSection } from './components/FaqSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
+import { SolutionPage } from './components/SolutionPage';
+import { NotFoundPage } from './components/NotFoundPage';
+import { ROUTES } from './config/routes';
+import { initAttribution, updatePillarInterest } from './lib/attribution';
 
-export function App() {
+interface AppProps {
+  initialPath?: string;
+}
+
+export function App({ initialPath }: AppProps) {
+  const [currentPath, setCurrentPath] = useState<string>(() => {
+    if (initialPath) return initialPath.replace(/\/$/, '') || '/';
+    if (typeof window !== 'undefined') {
+      return window.location.pathname.replace(/\/$/, '') || '/';
+    }
+    return '/';
+  });
+
   const [contactNotes, setContactNotes] = useState<string>('');
+
+  useEffect(() => {
+    // 1. Inicializa atribuição de primeiro toque e UTMs em sessionStorage
+    initAttribution();
+
+    // 2. Canonicalização estrita no cliente: remove qualquer ?utm_*, ?fbclid= ou ?gclid=
+    try {
+      const cleanCanonicalHref = `${window.location.origin}${window.location.pathname.replace(/\/$/, '') || '/'}`;
+      let canonicalEl = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+      if (!canonicalEl) {
+        canonicalEl = document.createElement('link');
+        canonicalEl.setAttribute('rel', 'canonical');
+        document.head.appendChild(canonicalEl);
+      }
+      canonicalEl.setAttribute('href', cleanCanonicalHref);
+    } catch {
+      // Ignora erro em ambientes restritos
+    }
+
+    // 3. Listener para navegação por histórico do navegador (popstate)
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname.replace(/\/$/, '') || '/');
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const scrollToContact = () => {
     const formCard = document.getElementById('formulario');
@@ -46,6 +88,8 @@ export function App() {
       systems: 'METRYS Sob Medida (Desenvolvimento de sistemas)',
     };
 
+    updatePillarInterest(solutionId);
+
     if (solutionId === 'all') {
       setContactNotes('Gostaria de entender a implantação unificada do ecossistema completo.');
     } else if (solutionMap[solutionId]) {
@@ -55,6 +99,27 @@ export function App() {
     scrollToContact();
   };
 
+  // Roteamento: Caso rota seja uma das 4 páginas de solução
+  if (currentPath !== '/' && ROUTES[currentPath]) {
+    return (
+      <>
+        <Toaster position="top-right" theme="light" richColors />
+        <SolutionPage meta={ROUTES[currentPath]} onOpenContact={scrollToContact} />
+      </>
+    );
+  }
+
+  // Roteamento: Caso rota seja 404
+  if (currentPath === '/404' || (currentPath !== '/' && !ROUTES[currentPath])) {
+    return (
+      <>
+        <Toaster position="top-right" theme="light" richColors />
+        <NotFoundPage />
+      </>
+    );
+  }
+
+  // Rota padrão: Homepage com o ecossistema completo
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-[#0A1128] flex flex-col font-sans selection:bg-[#0A1128] selection:text-white">
       {/* Sonner Toast Provider */}
@@ -65,13 +130,13 @@ export function App() {
 
       {/* Main Content Sections */}
       <main className="flex-1">
-        {/* 1. Hero Section with Side-by-Side Hook and Perspective Systems Mockup */}
+        {/* 1. Hero Section */}
         <Hero
           onOpenContact={scrollToContact}
           onPillarSelect={handleSelectSolution}
         />
 
-        {/* 2. Os 4 Banners Horizontais de Solução (Agentes IA, CRM, Automações, Software) */}
+        {/* 2. Os 4 Banners Horizontais de Solução com links semânticos crawlables */}
         <SolutionsPillBanners onSelectSolution={handleSelectSolution} />
 
         {/* 2b. Partner Logos Ticker — Social Proof Infinite Marquee */}
@@ -83,22 +148,22 @@ export function App() {
         {/* 4. Detalhamento Interativo dos 4 Pilares METRYS (CRM, AI, Flow, Systems) */}
         <SolutionsGrid onSelectSolution={handleSelectSolution} />
 
-        {/* 6. Comparativo Antes vs Depois (Realidade da Empresa) */}
+        {/* 5. Comparativo Antes vs Depois (Realidade da Empresa - Tier B CDC/CONAR) */}
         <BeforeAfterComparison onCtaClick={scrollToContact} />
 
-        {/* 7. Parceria Humana & Implantação Assistida */}
+        {/* 6. Parceria Humana & Implantação Assistida */}
         <HumanInTheLoop />
 
-        {/* 8. Casos Reais de Sucesso com Pessoas & Métricas */}
+        {/* 7. Casos Reais de Sucesso com Pessoas & Métricas */}
         <CustomerStories />
 
-        {/* 9. Segurança, LGPD & Blindagem de Dados */}
+        {/* 8. Segurança, LGPD & Blindagem de Dados */}
         <SecurityAndCompliance />
 
-        {/* 10. Perguntas Frequentes (Desmistificando a IA) */}
+        {/* 9. Perguntas Frequentes (Desmistificando a IA) */}
         <FaqSection />
 
-        {/* 11. Formulário de Agendamento Comercial & Contato */}
+        {/* 10. Formulário de Agendamento Comercial & Contato */}
         <ContactSection initialNotes={contactNotes} />
       </main>
 

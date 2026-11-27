@@ -24,12 +24,7 @@ export const Hero: FC<HeroProps> = ({ onOpenContact }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
           
           {/* Left Column: High-Converting Hook (5 cols on lg) */}
-          <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 text-left space-y-6 z-10"
-          >
+          <div className="lg:col-span-5 text-left space-y-6 z-10">
             {/* Eyebrow Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#CBD5E1] shadow-sm">
               <span className="w-2 h-2 rounded-full bg-[#1E2E4A] animate-pulse" />
@@ -79,9 +74,9 @@ export const Hero: FC<HeroProps> = ({ onOpenContact }) => {
               <div className="bg-white/90 backdrop-blur-sm p-3 rounded-xl border border-[#E2E8F0] shadow-sm">
                 <div className="flex items-center gap-1.5 text-xs text-emerald-600 font-bold mb-0.5">
                   <TrendingUp className="w-3.5 h-3.5" />
-                  <AnimatedCounter from={0} to={42} prefix="+" suffix="%" className="text-base sm:text-lg font-black text-[#0A1128]" />
+                  <AnimatedCounter from={0} to={100} prefix="" suffix="%" className="text-base sm:text-lg font-black text-[#0A1128]" />
                 </div>
-                <span className="text-[10px] text-[#64748B] font-semibold block leading-tight">Taxa de Conversão</span>
+                <span className="text-[10px] text-[#64748B] font-semibold block leading-tight">Follow-up Ativo</span>
               </div>
 
               <div className="bg-white/90 backdrop-blur-sm p-3 rounded-xl border border-[#E2E8F0] shadow-sm">
@@ -120,24 +115,27 @@ export const Hero: FC<HeroProps> = ({ onOpenContact }) => {
                 <span>Suporte Contínuo e Evolução Constante</span>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Column: LARGE, BORDERLESS Integrated Systems Mockup (7 cols on lg) */}
-          <motion.div
-            initial={{ opacity: 0, x: 24, scale: 0.98 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 relative flex items-center justify-center lg:justify-end mt-6 sm:mt-8 lg:mt-0"
-          >
+          <div className="lg:col-span-7 relative flex items-center justify-center lg:justify-end mt-6 sm:mt-8 lg:mt-0">
             {/* The Large Systems Graphic sits directly on the section canvas with NO card border, NO box */}
             <div className="relative w-full max-w-lg lg:max-w-none lg:w-[136%] xl:w-[148%] 2xl:w-[158%] lg:-mr-24 xl:-mr-36 2xl:-mr-48 pointer-events-none select-none">
-              <img
-                src="/images/hero-systems-integrated.png"
-                alt="Ecossistema Corporativo METRYS: CRM Dashboard, aplicativo mobile, agente de IA e notificações em tempo real"
-                className="w-full h-auto object-contain filter drop-shadow-xl"
-              />
+              <picture>
+                <source srcSet="/images/hero-systems-integrated.webp" type="image/webp" />
+                <img
+                  src="/images/hero-systems-integrated.png"
+                  alt="Ecossistema Corporativo METRYS: CRM Dashboard, aplicativo mobile, agente de IA e notificações em tempo real"
+                  width={1298}
+                  height={766}
+                  fetchPriority="high"
+                  loading="eager"
+                  decoding="async"
+                  className="w-full h-auto object-contain filter drop-shadow-xl"
+                />
+              </picture>
             </div>
-          </motion.div>
+          </div>
 
         </div>
 

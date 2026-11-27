@@ -255,9 +255,9 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
               <Layers className="w-4 h-4 text-[#2A4365]" />
               Arquitetura Unificada de Dados
             </div>
-            <h4 className="text-xl font-bold text-[#0A1128]">
+            <h3 className="text-xl font-bold text-[#0A1128]">
               Todas as 4 soluções operam em sinergia total
-            </h4>
+            </h3>
             <p className="text-sm text-[#52667D]">
               O lead qualificado pelo <strong>Metrys AI</strong> entra diretamente no <strong>Metrys CRM</strong>, tem suas tarefas faturadas via <strong>Metrys Automações</strong> e é alimentado no seu sistema central com <strong>Metrys Sob Medida</strong>.
             </p>

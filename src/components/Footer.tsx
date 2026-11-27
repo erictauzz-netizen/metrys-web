@@ -32,28 +32,28 @@ export const Footer: FC = () => {
 
           {/* Solutions Links (3 cols) */}
           <div className="lg:col-span-3 space-y-2.5">
-            <h4 className="text-[11px] font-display font-bold text-white uppercase tracking-wider">
+            <h3 className="text-[11px] font-display font-bold text-white uppercase tracking-wider">
               Ecossistema
-            </h4>
+            </h3>
             <ul className="space-y-1.5 text-xs text-[#CBD7E5]">
               <li>
-                <a href="#solucoes" className="hover:text-white transition-colors">
-                  <strong className="text-white">METRYS CRM</strong> — Vendas
+                <a href="/solucoes/crm-b2b" className="hover:text-white transition-colors">
+                  <strong className="text-white">METRYS CRM</strong> — Vendas B2B
                 </a>
               </li>
               <li>
-                <a href="#solucoes" className="hover:text-white transition-colors">
-                  <strong className="text-white">METRYS AI</strong> — Agentes IA
+                <a href="/solucoes/agentes-ia-whatsapp-voz" className="hover:text-white transition-colors">
+                  <strong className="text-white">METRYS AI</strong> — Agentes IA & Voz
                 </a>
               </li>
               <li>
-                <a href="#solucoes" className="hover:text-white transition-colors">
-                  <strong className="text-white">METRYS AUTOMAÇÕES</strong> — Processos
+                <a href="/solucoes/automacoes-integracoes-erp" className="hover:text-white transition-colors">
+                  <strong className="text-white">METRYS AUTOMAÇÕES</strong> — Integração ERP
                 </a>
               </li>
               <li>
-                <a href="#solucoes" className="hover:text-white transition-colors">
-                  <strong className="text-white">METRYS SOB MEDIDA</strong> — Sistemas
+                <a href="/solucoes/software-sob-medida" className="hover:text-white transition-colors">
+                  <strong className="text-white">METRYS SOB MEDIDA</strong> — Sistemas Web
                 </a>
               </li>
             </ul>
@@ -61,32 +61,32 @@ export const Footer: FC = () => {
 
           {/* Navigation Links (2 cols) */}
           <div className="lg:col-span-2 space-y-2.5">
-            <h4 className="text-[11px] font-display font-bold text-white uppercase tracking-wider">
+            <h3 className="text-[11px] font-display font-bold text-white uppercase tracking-wider">
               Navegação
-            </h4>
+            </h3>
             <ul className="space-y-1.5 text-xs text-[#CBD7E5]">
               <li>
-                <a href="#solucoes" className="hover:text-white transition-colors">
+                <a href="/#solucoes" className="hover:text-white transition-colors">
                   Soluções
                 </a>
               </li>
               <li>
-                <a href="#metodologia" className="hover:text-white transition-colors">
+                <a href="/#metodologia" className="hover:text-white transition-colors">
                   Metodologia
                 </a>
               </li>
               <li>
-                <a href="#historias" className="hover:text-white transition-colors">
+                <a href="/#historias" className="hover:text-white transition-colors">
                   Casos Reais
                 </a>
               </li>
               <li>
-                <a href="#seguranca" className="hover:text-white transition-colors">
+                <a href="/#seguranca" className="hover:text-white transition-colors">
                   Segurança & LGPD
                 </a>
               </li>
               <li>
-                <a href="#faq" className="hover:text-white transition-colors">
+                <a href="/#faq" className="hover:text-white transition-colors">
                   Dúvidas Frequentes
                 </a>
               </li>
@@ -95,9 +95,9 @@ export const Footer: FC = () => {
 
           {/* Contact (2 cols) */}
           <div className="lg:col-span-2 space-y-2.5">
-            <h4 className="text-[11px] font-display font-bold text-white uppercase tracking-wider">
+            <h3 className="text-[11px] font-display font-bold text-white uppercase tracking-wider">
               Atendimento
-            </h4>
+            </h3>
             <ul className="space-y-2 text-xs text-[#CBD7E5]">
               <li>
                 <a

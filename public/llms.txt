@@ -1,31 +1,24 @@
-# METRYS — Ecossistema Corporativo com Inteligência Artificial
+# METRYS Tecnologia — Ecossistema Corporativo com IA
+> Tecnologia que Move Negócios
 
-> Plataforma integrada de tecnologia corporativa para empresas brasileiras: CRM, Agentes de IA, Automação de Processos e Desenvolvimento Sob Medida.
+A METRYS desenvolve soluções tecnológicas para empresas de médio e grande porte, integrando inteligência artificial, gestão comercial, automação de processos e desenvolvimento de software sob medida.
 
-## Visão Geral
-A METRYS (metrys.com.br) desenvolve soluções corporativas integradas que unem inteligência artificial, gestão comercial, automação de rotinas e engenharia de software sob medida. O objetivo é eliminar o trabalho braçal de empresas, acelerar pipelines de vendas e integrar sistemas legados com segurança e total conformidade com a LGPD.
+## Módulos e Soluções
+- [METRYS CRM B2B](https://metrys.com.br/solucoes/crm-b2b): Plataforma de gestão comercial com funil visual Kanban, integração profunda com WhatsApp corporativo, rastreamento de negociações e previsibilidade de receita.
+- [METRYS Agentes de IA](https://metrys.com.br/solucoes/agentes-ia-whatsapp-voz): Agentes inteligentes para atendimento 24/7 em WhatsApp e voz, qualificação automática de leads com tempo médio de resposta inferior a 2 segundos. Camada de software e IA integrada a operadoras e troncos SIP parceiros homologados no Brasil.
+- [METRYS Automações](https://metrys.com.br/solucoes/automacoes-integracoes-erp): Orquestração de workflows entre canais de atendimento e ERPs de mercado (Bling, Omie, Totvs, SAP, RD Station), automatizando faturamento, notas fiscais e conciliações bancárias.
+- [METRYS Software Sob Medida](https://metrys.com.br/solucoes/software-sob-medida): Desenvolvimento de sistemas corporativos personalizados, portais de clientes e plataformas cloud-native com ciclo de entregas por sprints ágeis (MVP a partir de 30 a 45 dias úteis).
 
-## Soluções Principais
-- **METRYS CRM**: Gestão de funis de vendas B2B (Inside Sales e Field Sales), acompanhamento de pipelines em tempo real, distribuição inteligente de leads por pontuação, relatórios de conversão e follow-up automático via WhatsApp oficial e e-mail.
-- **METRYS AI**: Agentes de inteligência artificial treinados exclusivamente em bases proprietárias corporativas (Zero-Data-Leak), integrados a WhatsApp, Telegram e webhooks, capazes de triagem de clientes de alto valor, qualificação em menos de 2 segundos e agendamento autônomo com transição humana assistida.
-- **METRYS AUTOMAÇÕES**: Orquestração e conexão de processos entre ERPs, CRMs, plataformas fiscais e gateways de pagamento (Bling, Omie, Totvs, SAP, HubSpot, RD Station, n8n, Make, APIs REST). Conciliação bancária automática, emissão fiscal e tratamento de falhas em background.
-- **METRYS SOB MEDIDA**: Engenharia de software e plataformas corporativas sob medida (React, Node.js, Next.js, PostgreSQL), portais de autoatendimento B2B, dashboards executivos e APIs proprietárias com código 100% transferido para a empresa contratante.
+## Prazos e Governança Comercial (SLAs CDC/CONAR)
+- Onboarding de CRM B2B, Agentes de IA e Automações padrão: tipicamente entre 5 e 15 dias úteis com homologação assistida.
+- Software Sob Medida: dimensionado por sprints de escopo acordado, com primeiro MVP funcional a partir de 30 a 45 dias úteis.
+- Telefonia e Voz com IA: a METRYS é desenvolvedora da camada de software de IA conversacional, operando em conexão direta com parceiros e operadoras de telecomunicação homologadas pela Anatel.
 
-## Diferenciais Competitivos
-- Implantação 100% assistida com consultores seniores e engenheiros dedicados.
-- 100% em conformidade com a LGPD (Lei Geral de Proteção de Dados) e atuação sob contrato de sigilo corporativo (NDA).
-- Zero interrupção operacional durante migrações e integrações.
-- Canal de suporte direto via WhatsApp com gerentes de conta.
+## Segurança e Privacidade (LGPD)
+- Isolamento estrito de dados por empresa (multi-tenancy com blindagem).
+- Criptografia padrão AES-256 em repouso e TLS 1.3 em trânsito.
+- Dados corporativos não utilizados para treinamento de modelos públicos abertos.
 
-## Setores Atendidos
-- Construção Civil e Incorporadoras
-- Saúde, Clínicas e Redes Médicas
-- Comércio, Varejo e Distribuidoras
-- Logística e Transportes
-- Escritórios Jurídicos e Consultorias B2B
-- Indústria e Prestadores de Serviços
-
-## Informações Oficiais e Contato
-- Site Oficial: https://metrys.com.br
-- Demonstração Comercial: https://metrys.com.br/#formulario
-- Idioma: Português (Brasil)
+## Contato e Canais Oficiais
+- Website: https://metrys.com.br
+- E-mail: comercial@metrys.com.br

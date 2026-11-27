@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback, type FC, type FormEvent } from 'react';
 import { toast } from 'sonner';
+import { getAttributionData, sendGaEvent } from '../lib/attribution';
 import {
   Send,
   Phone,
@@ -32,6 +33,10 @@ interface PendingLeadPayload {
   utm_campaign?: string;
   utm_term?: string;
   utm_content?: string;
+  landing_page?: string;
+  initial_referrer?: string;
+  pillar_interest?: string;
+  website_url_confirm?: string;
 }
 
 interface PendingLeadRecord {
@@ -132,6 +137,10 @@ async function postLeadToApi(record: PendingLeadRecord): Promise<PostLeadOutcome
   if (record.payload.email) bodyParams.set('email', record.payload.email);
   if (record.payload.empresa) bodyParams.set('empresa', record.payload.empresa);
   if (record.payload.mensagem) bodyParams.set('mensagem', record.payload.mensagem);
+  if (record.payload.landing_page) bodyParams.set('landing_page', record.payload.landing_page);
+  if (record.payload.initial_referrer) bodyParams.set('initial_referrer', record.payload.initial_referrer);
+  if (record.payload.pillar_interest) bodyParams.set('pillar_interest', record.payload.pillar_interest);
+  if (record.payload.website_url_confirm) bodyParams.set('website_url_confirm', record.payload.website_url_confirm);
 
   for (const utmKey of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const) {
     const val = record.payload[utmKey];
@@ -196,6 +205,7 @@ export const ContactSection: FC<ContactSectionProps> = ({
   const [phone, setPhone] = useState('');
   const [company, setCompany] = useState('');
   const [notes, setNotes] = useState('');
+  const [honeypot, setHoneypot] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [pendingLead, setPendingLead] = useState<PendingLeadRecord | null>(null);
@@ -218,6 +228,10 @@ export const ContactSection: FC<ContactSectionProps> = ({
     setIsSubmitting(false);
     setIsRetrying(false);
     setSubmitted(true);
+    sendGaEvent('generate_lead', {
+      event_category: 'lead',
+      event_label: 'formulario_contato',
+    });
     confetti({
       particleCount: 60,
       spread: 70,
@@ -352,13 +366,18 @@ export const ContactSection: FC<ContactSectionProps> = ({
       return;
     }
 
-    const searchParams = new URLSearchParams(window.location.search);
+    const attribution = getAttributionData();
+    const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
     const payload: PendingLeadPayload = {
       nome: name.trim(),
       telefone: phone.trim(),
       ...(email.trim() ? { email: email.trim() } : {}),
       ...(company.trim() ? { empresa: company.trim() } : {}),
       ...(notes.trim() ? { mensagem: notes.trim() } : {}),
+      landing_page: attribution.landing_page,
+      initial_referrer: attribution.initial_referrer,
+      pillar_interest: attribution.pillar_interest,
+      ...(honeypot.trim() ? { website_url_confirm: honeypot.trim() } : {}),
     };
 
     for (const utmKey of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const) {
@@ -573,37 +592,55 @@ export const ContactSection: FC<ContactSectionProps> = ({
                     </div>
                   )}
 
+                  {/* Honeypot Anti-Spam invisível */}
+                  <div className="hidden" aria-hidden="true">
+                    <label htmlFor="website_url_confirm">Não preencha se for humano</label>
+                    <input
+                      type="text"
+                      id="website_url_confirm"
+                      name="website_url_confirm"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                    />
+                  </div>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-[#0A1128] mb-1.5">
+                      <label htmlFor="lead-name" className="block text-xs font-bold text-[#0A1128] mb-1.5">
                         Nome *
                       </label>
                       <div className="relative">
-                        <User className="w-4 h-4 text-[#94A3B8] absolute left-3.5 top-3.5" />
+                        <User className="w-4 h-4 text-[#64748B] absolute left-3.5 top-3.5" />
                         <input
+                          id="lead-name"
+                          name="name"
                           type="text"
                           required
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           placeholder="Ex: Roberto Silva"
-                          className="w-full bg-white border border-[#CBD5E1] focus:border-transparent focus:ring-2 focus:ring-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#94A3B8] focus:outline-none transition-all shadow-sm"
+                          className="w-full bg-white border border-[#CBD5E1] focus:border-transparent focus:ring-2 focus:ring-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#64748B] focus:outline-none transition-all shadow-sm"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-[#0A1128] mb-1.5">
+                      <label htmlFor="lead-phone" className="block text-xs font-bold text-[#0A1128] mb-1.5">
                         Telefone / WhatsApp *
                       </label>
                       <div className="relative">
-                        <Phone className="w-4 h-4 text-[#94A3B8] absolute left-3.5 top-3.5" />
+                        <Phone className="w-4 h-4 text-[#64748B] absolute left-3.5 top-3.5" />
                         <input
+                          id="lead-phone"
+                          name="phone"
                           type="tel"
                           required
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="DDD + Seu WhatsApp ou Telefone"
-                          className="w-full bg-white border border-[#CBD5E1] focus:border-transparent focus:ring-2 focus:ring-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#94A3B8] focus:outline-none transition-all shadow-sm"
+                          className="w-full bg-white border border-[#CBD5E1] focus:border-transparent focus:ring-2 focus:ring-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#64748B] focus:outline-none transition-all shadow-sm"
                         />
                       </div>
                     </div>
@@ -611,33 +648,37 @@ export const ContactSection: FC<ContactSectionProps> = ({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-[#0A1128] mb-1.5">
-                        E-mail <span className="text-[#94A3B8] font-normal">(opcional)</span>
+                      <label htmlFor="lead-email" className="block text-xs font-bold text-[#0A1128] mb-1.5">
+                        E-mail <span className="text-[#64748B] font-normal">(opcional)</span>
                       </label>
                       <div className="relative">
-                        <Mail className="w-4 h-4 text-[#94A3B8] absolute left-3.5 top-3.5" />
+                        <Mail className="w-4 h-4 text-[#64748B] absolute left-3.5 top-3.5" />
                         <input
+                          id="lead-email"
+                          name="email"
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="roberto@suaempresa.com"
-                          className="w-full bg-white border border-[#CBD5E1] focus:border-transparent focus:ring-2 focus:ring-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#94A3B8] focus:outline-none transition-all shadow-sm"
+                          className="w-full bg-white border border-[#CBD5E1] focus:border-transparent focus:ring-2 focus:ring-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#64748B] focus:outline-none transition-all shadow-sm"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-[#0A1128] mb-1.5">
-                        Nome da empresa <span className="text-[#94A3B8] font-normal">(opcional)</span>
+                      <label htmlFor="lead-company" className="block text-xs font-bold text-[#0A1128] mb-1.5">
+                        Nome da empresa <span className="text-[#64748B] font-normal">(opcional)</span>
                       </label>
                       <div className="relative">
-                        <Building2 className="w-4 h-4 text-[#94A3B8] absolute left-3.5 top-3.5" />
+                        <Building2 className="w-4 h-4 text-[#64748B] absolute left-3.5 top-3.5" />
                         <input
+                          id="lead-company"
+                          name="company"
                           type="text"
                           value={company}
                           onChange={(e) => setCompany(e.target.value)}
                           placeholder="Nome da sua empresa"
-                          className="w-full bg-white border border-[#CBD5E1] focus:border-transparent focus:ring-2 focus:ring-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#94A3B8] focus:outline-none transition-all shadow-sm"
+                          className="w-full bg-white border border-[#CBD5E1] focus:border-transparent focus:ring-2 focus:ring-[#0A1128] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#0A1128] placeholder-[#64748B] focus:outline-none transition-all shadow-sm"
                         />
                       </div>
                     </div>
@@ -645,15 +686,17 @@ export const ContactSection: FC<ContactSectionProps> = ({
 
                   {/* Open Needs Description Textarea */}
                   <div>
-                    <label className="block text-xs font-bold text-[#0A1128] mb-1.5">
-                      Descreva o que você precisa <span className="text-[#94A3B8] font-normal">(opcional)</span>
+                    <label htmlFor="lead-notes" className="block text-xs font-bold text-[#0A1128] mb-1.5">
+                      Descreva o que você precisa <span className="text-[#64748B] font-normal">(opcional)</span>
                     </label>
                     <textarea
+                      id="lead-notes"
+                      name="notes"
                       rows={4}
                       value={notes}
                       onChange={(e) => setNotes(e.target.value)}
                       placeholder="Ex: Gostaria de integrar nosso atendimento WhatsApp com o funil comercial e automatizar emissão de contratos e notas fiscais."
-                      className="w-full bg-white border border-[#CBD5E1] focus:border-transparent focus:ring-2 focus:ring-[#0A1128] rounded-xl p-3 text-sm text-[#0A1128] placeholder-[#94A3B8] focus:outline-none transition-all shadow-sm"
+                      className="w-full bg-white border border-[#CBD5E1] focus:border-transparent focus:ring-2 focus:ring-[#0A1128] rounded-xl p-3 text-sm text-[#0A1128] placeholder-[#64748B] focus:outline-none transition-all shadow-sm"
                     />
                   </div>
 
