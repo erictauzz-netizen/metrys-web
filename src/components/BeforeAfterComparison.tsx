@@ -15,8 +15,8 @@ export const BeforeAfterComparison: FC<BeforeAfterComparisonProps> = ({ onCtaCli
       icon: Clock,
       before: {
         tag: 'Demora e perda de oportunidade',
-        text: 'O lead entra no WhatsApp às 18h e só recebe retorno no dia seguinte. Mais de 40% já fecharam com a concorrência.',
-        metric: '4 a 14 horas de espera',
+        text: 'O lead entra no WhatsApp às 18h e só recebe retorno no dia seguinte, perdendo o momento da decisão.',
+        metric: 'Espera até o próximo dia útil',
       },
       after: {
         tag: 'Atendimento instantâneo e cordial',
@@ -30,12 +30,12 @@ export const BeforeAfterComparison: FC<BeforeAfterComparisonProps> = ({ onCtaCli
       before: {
         tag: 'Planilhas desatualizadas e esquecimento',
         text: 'Vendedores esquecem o follow-up de propostas em aberto. A diretoria opera às cegas, sem previsão confiável de faturamento.',
-        metric: 'Mais de 35% dos leads abandonados',
+        metric: 'Leads sem registro nem retorno programado',
       },
       after: {
         tag: 'Previsibilidade e follow-up automático',
-        text: 'Metrys CRM dispara lembretes inteligentes, pontua clientes por propensão de compra e mantém o funil 100% atualizado.',
-        metric: '100% de follow-up em propostas ativas',
+        text: 'Metrys CRM dispara lembretes inteligentes, organiza o histórico de contato e mantém o funil continuamente atualizado.',
+        metric: 'Follow-up automatizado em propostas ativas',
       },
     },
     {
@@ -43,13 +43,13 @@ export const BeforeAfterComparison: FC<BeforeAfterComparisonProps> = ({ onCtaCli
       icon: Zap,
       before: {
         tag: 'Digitação manual repetitiva',
-        text: 'Colaboradores perdem horas copiando dados entre WhatsApp, planilhas e o ERP para faturar pedidos e conciliar notas.',
-        metric: 'Cerca de 14h/semana em retrabalho',
+        text: 'Colaboradores perdem tempo copiando dados entre WhatsApp, planilhas e o ERP para faturar pedidos e conciliar notas.',
+        metric: 'Horas semanais em digitação repetitiva',
       },
       after: {
         tag: 'Integração contínua sem esforço manual',
-        text: 'Metrys Automações orquestra vendas, faturamento, emissão fiscal e conciliação bancária sem erro humano.',
-        metric: '120h operacionais economizadas/mês',
+        text: 'Metrys Automações orquestra vendas, faturamento, emissão fiscal e conciliação bancária sem digitação manual.',
+        metric: 'Rotinas integradas sem digitação manual',
       },
     },
     {

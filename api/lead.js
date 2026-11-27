@@ -319,7 +319,7 @@ const ALLOWED_ORIGINS = [
 function isOriginAllowed(origin) {
   if (!origin) return false;
   if (ALLOWED_ORIGINS.includes(origin)) return true;
-  return /^https:\/\/[a-z0-9-]+(?:\.[a-z0-9-]+)?\.vercel\.app$/i.test(origin);
+  return /^https:\/\/metrys-web(-[a-z0-9-]+)?\.vercel\.app$/.test(origin);
 }
 
 export default async function handler(req, res) {

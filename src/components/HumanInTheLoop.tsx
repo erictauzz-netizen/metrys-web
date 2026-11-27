@@ -43,7 +43,7 @@ export const HumanInTheLoop: FC = () => {
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0A1128] tracking-tight">
             Tecnologia de Ponta com{' '}
-            <span className="text-[#2A4365]">Acompanhamento 100% Humano</span>
+            <span className="text-[#2A4365]">Acompanhamento Humano Direto</span>
           </h2>
 
           <p className="text-base text-[#52667D]">

@@ -1,7 +1,6 @@
 import type { FC } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, MessageSquare, ShieldCheck, Users, Cpu, Headphones, TrendingUp, Zap, Clock } from 'lucide-react';
-import { AnimatedCounter } from './AnimatedCounter';
 
 interface HeroProps {
   onOpenContact: () => void;
@@ -35,9 +34,9 @@ export const Hero: FC<HeroProps> = ({ onOpenContact }) => {
 
             {/* Main Headline */}
             <h1 className="text-3xl sm:text-4xl lg:text-[44px] xl:text-5xl font-black text-[#0A1128] tracking-tight leading-[1.12]">
-              Sua empresa opera melhor quando a{' '}
+              CRM B2B, Agentes de IA para WhatsApp e Voz,{' '}
               <span className="text-[#1E2E4A] bg-gradient-to-r from-[#0A1128] via-[#1E2E4A] to-[#2A4365] bg-clip-text text-transparent">
-                tecnologia trabalha por você.
+                Automações e Software Sob Medida.
               </span>
             </h1>
 
@@ -69,30 +68,30 @@ export const Hero: FC<HeroProps> = ({ onOpenContact }) => {
               </motion.button>
             </div>
 
-            {/* Social Proof Quick Counters Grid */}
+            {/* Architecture & SLA Quick Indicators Grid */}
             <div className="pt-3 grid grid-cols-3 gap-3 border-t border-[#CBD5E1]/60">
               <div className="bg-white/90 backdrop-blur-sm p-3 rounded-xl border border-[#E2E8F0] shadow-sm">
                 <div className="flex items-center gap-1.5 text-xs text-emerald-600 font-bold mb-0.5">
                   <TrendingUp className="w-3.5 h-3.5" />
-                  <AnimatedCounter from={0} to={100} prefix="" suffix="%" className="text-base sm:text-lg font-black text-[#0A1128]" />
+                  <span className="text-sm sm:text-base font-black text-[#0A1128]">Funil Ativo</span>
                 </div>
-                <span className="text-[10px] text-[#64748B] font-semibold block leading-tight">Follow-up Ativo</span>
+                <span className="text-[10px] text-[#64748B] font-semibold block leading-tight">Follow-up Automatizado</span>
               </div>
 
               <div className="bg-white/90 backdrop-blur-sm p-3 rounded-xl border border-[#E2E8F0] shadow-sm">
                 <div className="flex items-center gap-1.5 text-xs text-blue-600 font-bold mb-0.5">
                   <Zap className="w-3.5 h-3.5" />
-                  <AnimatedCounter from={10} to={1.8} decimals={1} prefix="< " suffix="s" duration={1.2} className="text-base sm:text-lg font-black text-[#0A1128]" />
+                  <span className="text-sm sm:text-base font-black text-[#0A1128]">&lt; 2s</span>
                 </div>
-                <span className="text-[10px] text-[#64748B] font-semibold block leading-tight">Resposta com IA</span>
+                <span className="text-[10px] text-[#64748B] font-semibold block leading-tight">Triagem com IA</span>
               </div>
 
               <div className="bg-white/90 backdrop-blur-sm p-3 rounded-xl border border-[#E2E8F0] shadow-sm">
                 <div className="flex items-center gap-1.5 text-xs text-indigo-600 font-bold mb-0.5">
                   <Clock className="w-3.5 h-3.5" />
-                  <AnimatedCounter from={0} to={140} suffix="h+" className="text-base sm:text-lg font-black text-[#0A1128]" />
+                  <span className="text-sm sm:text-base font-black text-[#0A1128]">Multi-ERP</span>
                 </div>
-                <span className="text-[10px] text-[#64748B] font-semibold block leading-tight">Salvas por Mês</span>
+                <span className="text-[10px] text-[#64748B] font-semibold block leading-tight">Integração Nativa</span>
               </div>
             </div>
 
@@ -100,7 +99,7 @@ export const Hero: FC<HeroProps> = ({ onOpenContact }) => {
             <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-semibold text-[#475569]">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-[#0A1128] flex-shrink-0" />
-                <span>100% Adequado à LGPD e Sigilo sob NDA</span>
+                <span>Adequado à LGPD e Sigilo sob NDA</span>
               </div>
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 text-[#0A1128] flex-shrink-0" />

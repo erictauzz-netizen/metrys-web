@@ -33,7 +33,7 @@ export const SecurityAndCompliance: FC = () => {
         <div className="text-center max-w-2xl mx-auto space-y-3 mb-12">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#CBD5E1] text-xs font-display font-bold text-[#0A1128] uppercase tracking-wider shadow-card">
             <Lock className="w-3.5 h-3.5 text-[#2A4365]" />
-            Segurança Empresarial Auditada
+            Segurança Empresarial & Governança
           </div>
 
           <h2 className="text-3xl font-black text-[#0A1128] tracking-tight">
@@ -67,7 +67,7 @@ export const SecurityAndCompliance: FC = () => {
                 </div>
                 <div className="pt-2 flex items-center gap-1.5 text-[11px] font-display font-bold text-emerald-700">
                   <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Auditado</span>
+                  <span>Implementado por Padrão</span>
                 </div>
               </div>
             );

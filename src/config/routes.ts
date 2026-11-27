@@ -19,11 +19,11 @@ export interface RouteMeta {
 export const ROUTES: Record<string, RouteMeta> = {
   '/': {
     path: '/',
-    title: 'METRYS | Tecnologia que Move Negócios — Sistemas e IA B2B',
+    title: 'METRYS | CRM B2B, IA WhatsApp/Voz, Automações e Software',
     description:
       'Ecossistema corporativo com inteligência artificial: CRM B2B, Agentes de IA, Automações e Software Sob Medida para acelerar a produtividade da sua empresa.',
     canonical: `${ENTITY_CONFIG.domain}/`,
-    h1: 'Sua empresa opera melhor quando a tecnologia trabalha por você.',
+    h1: 'CRM B2B, Agentes de IA para WhatsApp e Voz, Automações e Software Sob Medida.',
     badge: 'ECOSSISTEMA CORPORATIVO COM IA',
     answerFirst:
       'A METRYS é uma empresa de tecnologia B2B especializada em inteligência artificial corporativa, CRM para gestão comercial, automação de processos e desenvolvimento de software personalizado. Nossas soluções se integram à infraestrutura e aos ERPs já utilizados por médias e grandes empresas, eliminando retrabalho operacional com implantação assistida e segurança de dados em conformidade com a LGPD.',
@@ -64,7 +64,6 @@ export const ROUTES: Record<string, RouteMeta> = {
     schemaType: 'SoftwareApplication',
     breadcrumbs: [
       { name: 'Início', url: `${ENTITY_CONFIG.domain}/` },
-      { name: 'Soluções', url: `${ENTITY_CONFIG.domain}/#solucoes` },
       { name: 'CRM B2B', url: `${ENTITY_CONFIG.domain}/solucoes/crm-b2b` },
     ],
     features: [
@@ -78,7 +77,7 @@ export const ROUTES: Record<string, RouteMeta> = {
       },
       {
         title: 'Automação de Follow-up Comercial',
-        desc: 'Lembretes programados para manter contato ativo com 100% dos leads qualificados.',
+        desc: 'Lembretes programados para manter contato ativo com todos os leads qualificados.',
       },
       {
         title: 'Previsibilidade e Relatórios',
@@ -102,7 +101,6 @@ export const ROUTES: Record<string, RouteMeta> = {
     schemaType: 'SoftwareApplication',
     breadcrumbs: [
       { name: 'Início', url: `${ENTITY_CONFIG.domain}/` },
-      { name: 'Soluções', url: `${ENTITY_CONFIG.domain}/#solucoes` },
       { name: 'Agentes de IA', url: `${ENTITY_CONFIG.domain}/solucoes/agentes-ia-whatsapp-voz` },
     ],
     features: [
@@ -140,7 +138,6 @@ export const ROUTES: Record<string, RouteMeta> = {
     schemaType: 'Service',
     breadcrumbs: [
       { name: 'Início', url: `${ENTITY_CONFIG.domain}/` },
-      { name: 'Soluções', url: `${ENTITY_CONFIG.domain}/#solucoes` },
       { name: 'Automações & ERP', url: `${ENTITY_CONFIG.domain}/solucoes/automacoes-integracoes-erp` },
     ],
     features: [
@@ -178,7 +175,6 @@ export const ROUTES: Record<string, RouteMeta> = {
     schemaType: 'Service',
     breadcrumbs: [
       { name: 'Início', url: `${ENTITY_CONFIG.domain}/` },
-      { name: 'Soluções', url: `${ENTITY_CONFIG.domain}/#solucoes` },
       { name: 'Software Sob Medida', url: `${ENTITY_CONFIG.domain}/solucoes/software-sob-medida` },
     ],
     features: [

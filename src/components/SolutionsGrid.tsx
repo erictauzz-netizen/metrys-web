@@ -29,7 +29,7 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
         'Relatórios de conversão em tempo real e análise de ticket médio',
         'Previsão de fechamento comercial orientada por histórico',
       ],
-      impact: '+42% de taxa de conversão comercial',
+      impact: 'Pipeline estruturado com follow-up automatizado',
     },
     {
       id: 'ai',
@@ -71,7 +71,7 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
         'Conexão nativa com SAP, Totvs, Bling, Omie, HubSpot e APIs REST',
         'Logs detalhados de auditoria e monitoramento de integridade',
       ],
-      impact: 'Mais de 120 horas operacionais poupadas por mês',
+      impact: 'Rotinas operacionais integradas sem digitação manual',
     },
     {
       id: 'systems',
@@ -90,7 +90,7 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
         'Design Systems consistentes e interfaces de alta usabilidade',
         'Camada rígida de segurança, controle de acessos RBAC e auditoria',
         'APIs proprietárias documentadas e prontas para integração',
-        'Código proprietário 100% transferido para a sua empresa',
+        'Código proprietário com cessão integral para a sua empresa',
       ],
       impact: 'Zero dependência de ferramentas limitadas de terceiros',
     },

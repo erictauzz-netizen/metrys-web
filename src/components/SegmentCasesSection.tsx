@@ -12,19 +12,19 @@ export const SegmentCasesSection: FC<SegmentCasesSectionProps> = ({ onCtaClick }
       id: 'construction',
       segment: 'Construção Civil',
       image: '/images/case-construction.jpg',
-      headline: '+45% em vendas com automações e CRM',
+      headline: 'Funil comercial integrado do lead à proposta',
     },
     {
       id: 'health',
       segment: 'Saúde',
       image: '/images/case-health.jpg',
-      headline: '-60% no tempo de atendimento',
+      headline: 'Triagem e agendamento contínuo 24/7 com IA',
     },
     {
       id: 'commerce',
       segment: 'Comércio',
       image: '/images/case-commerce.jpg',
-      headline: '+32% de conversão de leads em clientes',
+      headline: 'Qualificação instantânea e follow-up automatizado',
     },
   ];
 
@@ -38,12 +38,12 @@ export const SegmentCasesSection: FC<SegmentCasesSectionProps> = ({ onCtaClick }
           {/* Left Column: Heading and Description (4 cols) */}
           <div className="lg:col-span-4 text-left space-y-4">
             <h2 className="text-3xl sm:text-4xl font-black text-[#0A1128] tracking-tight leading-tight">
-              Resultados Reais <br className="hidden sm:inline" />
-              para Empresas Reais
+              Aplicações Práticas <br className="hidden sm:inline" />
+              por Segmento
             </h2>
 
             <p className="text-sm text-[#52667D] leading-relaxed">
-              A METRYS já ajudou empresas de diferentes segmentos a ganhar eficiência, aumentar vendas e reduzir custos com tecnologia aplicada.
+              A arquitetura METRYS se adapta às rotinas comerciais e operacionais de diferentes segmentos corporativos com CRM, IA e integrações.
             </p>
 
             <div className="pt-2">
@@ -51,7 +51,7 @@ export const SegmentCasesSection: FC<SegmentCasesSectionProps> = ({ onCtaClick }
                 onClick={onCtaClick}
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E2E4A] hover:text-[#0A1128] group transition-colors"
               >
-                <span>Ver todos os casos</span>
+                <span>Explorar aplicações</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
@@ -94,7 +94,7 @@ export const SegmentCasesSection: FC<SegmentCasesSectionProps> = ({ onCtaClick }
                   </h3>
 
                   <div className="inline-flex items-center gap-1 text-xs font-bold text-[#CBD7E5] group-hover:text-white transition-colors">
-                    <span>Ver case</span>
+                    <span>Solicitar demonstração</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>

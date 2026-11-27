@@ -13,16 +13,21 @@ export function generateSchemaGraph(route: RouteMeta) {
     logo: {
       '@type': 'ImageObject',
       '@id': `${ENTITY_CONFIG.domain}/#logo`,
-      url: `${ENTITY_CONFIG.domain}/favicon.svg`,
+      url: `${ENTITY_CONFIG.domain}/favicon-512x512.png`,
+      width: 512,
+      height: 512,
       caption: ENTITY_CONFIG.name,
     },
     description: ENTITY_CONFIG.description,
     email: ENTITY_CONFIG.email,
-    areaServed: {
-      '@type': 'Country',
-      name: 'Brazil',
-      identifier: 'BR',
-    },
+    areaServed: 'Brasil',
+    knowsAbout: [
+      'CRM B2B',
+      'Inteligência Artificial Corporativa',
+      'Automação de Processos',
+      'Integrações ERP',
+      'Desenvolvimento de Software',
+    ],
     contactPoint: [
       {
         '@type': 'ContactPoint',
@@ -90,6 +95,7 @@ export function generateSchemaGraph(route: RouteMeta) {
           '@type': 'Offer',
           price: '0',
           priceCurrency: 'BRL',
+          availability: 'https://schema.org/InStock',
           description: 'Diagnóstico comercial e orçamento sob medida.',
         },
         provider: {

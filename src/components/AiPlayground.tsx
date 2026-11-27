@@ -82,8 +82,8 @@ export const AiPlayground: FC = () => {
         action = 'Mapeamento de Webhook & API REST';
       } else if (lower.includes('seguran') || lower.includes('lgpd') || lower.includes('privacid') || lower.includes('públic')) {
         reply =
-          'Não, categoricamente não. Toda a infraestrutura da METRYS opera com isolamento estrito por tenant. Seus dados cadastrais, financeiros e históricos nunca são utilizados para treinar modelos abertos nem compartilhados com terceiros. Cumprimos 100% da LGPD com criptografia AES-256.';
-        action = 'Protocolo Zero-Data-Leak Auditado';
+          'Não, categoricamente não. Toda a infraestrutura da METRYS opera com isolamento estrito por tenant. Seus dados cadastrais, financeiros e históricos nunca são utilizados para treinar modelos abertos nem compartilhados com terceiros. Operamos em conformidade com a LGPD e criptografia AES-256.';
+        action = 'Protocolo de Isolamento Zero-Data-Leak';
       } else {
         reply =
           `Compreendido. Para resolver esse ponto na sua operação, compomos um fluxo unificado entre METRYS AI e METRYS SOB MEDIDA. Nossos agentes executam tarefas com base estrita nos seus manuais operacionais e parâmetros de negócio, sem improvisos.`;
@@ -191,7 +191,7 @@ export const AiPlayground: FC = () => {
                 </div>
                 <div className="flex justify-between text-[#52667D]">
                   <span>Privacidade RAG:</span>
-                  <span className="text-emerald-600 font-mono font-bold">100% Blindado</span>
+                  <span className="text-emerald-600 font-mono font-bold">Isolamento por Tenant</span>
                 </div>
                 <div className="flex justify-between text-[#52667D]">
                   <span>Integração CRM:</span>

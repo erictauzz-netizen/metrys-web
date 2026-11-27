@@ -1,38 +1,35 @@
 import type { FC } from 'react';
 import { motion } from 'framer-motion';
-import { Star, Building2, TrendingUp, Quote } from 'lucide-react';
+import { Building2, Layers } from 'lucide-react';
 
 export const CustomerStories: FC = () => {
-  const testimonials = [
+  const scenarios = [
     {
-      name: 'Marcos Vinícius Mendes',
-      role: 'Diretor Comercial',
-      company: 'Logística & Distribuição Aliança',
+      segment: 'Distribuição & Logística B2B',
+      role: 'Diretoria Comercial',
       image: '/images/executive-man.jpg',
-      metric: '+48% em Vendas',
-      tagline: 'Fim dos leads esquecidos no WhatsApp',
-      story:
-        'Antes da Metrys, nossos vendedores externos perdiam metade do dia tentando responder mensagens e organizando planilhas. Com o Metrys AI e o Metrys CRM, o cliente é qualificado em 2 segundos e agendado com o consultor certo. Nosso faturamento cresceu no primeiro mês de uso.',
+      module: 'METRYS AI + CRM B2B',
+      tagline: 'Qualificação no WhatsApp com registro imediato no funil',
+      description:
+        'O agente de IA recebe o contato no WhatsApp corporativo, realiza a triagem inicial em menos de 2 segundos e registra o lead classificado no pipeline Kanban com agendamento direto para o consultor.',
     },
     {
-      name: 'Camila Duarte',
-      role: 'Head de Controladoria & Operações',
-      company: 'Grupo Nexus Engenharia',
+      segment: 'Engenharia & Controladoria',
+      role: 'Operações e Fiscal',
       image: '/images/executive-woman.jpg',
-      metric: '140 Horas Salvas / Mês',
-      tagline: 'Automação fiscal sem falhas de digitação',
-      story:
-        'A conciliação bancária e emissão de notas fiscais era um gargalo que exigia 3 pessoas dedicadas. O Metrys Automações conectou nosso ERP ao sistema de vendas com precisão cirúrgica. Eliminamos o retrabalho manual por completo.',
+      module: 'METRYS Automações & ERP',
+      tagline: 'Faturamento e conciliação integrados ao ERP',
+      description:
+        'Webhooks bidirecionais conectam o fluxo de vendas ao ERP corporativo, automatizando emissão fiscal, atualização cadastral e logs de conferência sem digitação manual entre sistemas.',
     },
     {
-      name: 'Dr. Roberto Fontes',
-      role: 'Sócio-Fundador',
-      company: 'Fontes & Associados Soluções B2B',
+      segment: 'Consultoria & Serviços B2B',
+      role: 'Atendimento Corporativo',
       image: '/images/consulting-session.jpg',
-      metric: '1.2s Tempo de Resposta',
-      tagline: 'Atendimento corporativo 24/7 com precisão',
-      story:
-        'Tínhamos receio de que a IA soasse artificial ou desse informações erradas sobre nossos contratos. A equipe da Metrys parametrizou nossos manuais e regras jurídicas com rigor exemplar. É como ter um profissional sênior de prontidão.',
+      module: 'METRYS AI + Sob Medida',
+      tagline: 'Triagem 24/7 parametrizada com regras do negócio',
+      description:
+        'Agentes treinados com manuais internos respondem dúvidas técnicas dentro do escopo aprovado pela empresa, mantendo histórico auditável e transição direta para atendimento humano.',
     },
   ];
 
@@ -44,24 +41,24 @@ export const CustomerStories: FC = () => {
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F1F5F9] border border-[#CBD5E1] text-xs font-display font-bold text-[#1E2E4A] uppercase tracking-wider shadow-card">
             <Building2 className="w-3.5 h-3.5 text-[#2A4365]" />
-            Lideranças que Confiam na Metrys
+            Cenários de Aplicação
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0A1128] tracking-tight">
-            Casos Reais de Quem Move Negócios com a{' '}
-            <span className="text-[#2A4365]">METRYS</span>
+            Arquitetura METRYS Aplicada à{' '}
+            <span className="text-[#2A4365]">Operação</span>
           </h2>
 
           <p className="text-base text-[#52667D]">
-            Veja depoimentos diretos de líderes que eliminaram gargalos operacionais e aceleraram a produtividade de suas equipes.
+            Exemplos de fluxos corporativos estruturados com CRM B2B, Agentes de IA e integrações ERP para eliminar gargalos operacionais.
           </p>
         </div>
 
-        {/* Testimonials Cards Grid with Motion */}
+        {/* Scenario Cards Grid with Motion */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {testimonials.map((t, idx) => (
+          {scenarios.map((item, idx) => (
             <motion.div
-              key={t.name}
+              key={item.segment}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-40px' }}
@@ -69,52 +66,37 @@ export const CustomerStories: FC = () => {
               whileHover={{ y: -4 }}
               className="bg-[#F8FAFC] p-8 rounded-2xl border border-[#E2E8F0] hover:border-[#0A1128] transition-all duration-200 shadow-card flex flex-col justify-between text-left relative group"
             >
-              {/* Quote Mark */}
-              <div className="absolute top-6 right-6 text-[#CBD5E1] group-hover:text-[#9FB2C8] transition-colors">
-                <Quote className="w-8 h-8 opacity-40" />
-              </div>
-
               <div className="space-y-4">
-                {/* 5 Stars Rating */}
-                <div className="flex items-center gap-1 text-[#2A4365]">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-[#2A4365]" />
-                  ))}
-                </div>
-
-                {/* Metric Badge */}
+                {/* Module Badge */}
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white border border-[#E2E8F0] text-xs font-display font-bold text-[#0A1128]">
-                  <TrendingUp className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>{t.metric}</span>
+                  <Layers className="w-3.5 h-3.5 text-[#2A4365]" />
+                  <span>{item.module}</span>
                 </div>
 
                 <h3 className="text-base font-bold text-[#0A1128]">
-                  &#8220;{t.tagline}&#8221;
+                  {item.tagline}
                 </h3>
 
                 <p className="text-xs sm:text-sm text-[#52667D] leading-relaxed">
-                  {t.story}
+                  {item.description}
                 </p>
               </div>
 
-              {/* Author Info with High-res Portrait Photo */}
+              {/* Area / Segment Info */}
               <div className="pt-6 mt-6 border-t border-[#E2E8F0] flex items-center gap-3.5">
                 <div className="w-13 h-13 rounded-full overflow-hidden border-2 border-white shadow-sm flex-shrink-0">
                   <img
-                    src={t.image}
-                    alt={t.name}
+                    src={item.image}
+                    alt={`${item.role} — ${item.segment}`}
                     className="w-12 h-12 rounded-full object-cover object-top"
                   />
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-[#0A1128] leading-tight">
-                    {t.name}
+                    {item.role}
                   </h4>
-                  <p className="text-[11px] text-[#52667D] mt-0.5 leading-tight">
-                    {t.role}
-                  </p>
                   <span className="text-[11px] font-sans font-semibold text-[#2A4365] block mt-0.5">
-                    {t.company}
+                    {item.segment}
                   </span>
                 </div>
               </div>

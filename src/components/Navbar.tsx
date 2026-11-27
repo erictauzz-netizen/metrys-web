@@ -23,7 +23,7 @@ export const Navbar: FC<NavbarProps> = ({ onOpenContact }) => {
   const navLinks = [
     { name: 'Soluções', href: '#solucoes' },
     { name: 'Metodologia', href: '#metodologia' },
-    { name: 'Casos Reais', href: '#historias' },
+    { name: 'Cenários', href: '#historias' },
     { name: 'Segurança & LGPD', href: '#seguranca' },
     { name: 'Dúvidas', href: '#faq' },
   ];
