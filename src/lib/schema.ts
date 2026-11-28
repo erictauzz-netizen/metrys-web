@@ -93,7 +93,6 @@ export function generateSchemaGraph(route: RouteMeta) {
         operatingSystem: 'Web, Cloud',
         offers: {
           '@type': 'Offer',
-          price: '0',
           priceCurrency: 'BRL',
           availability: 'https://schema.org/InStock',
           description: 'Diagnóstico comercial e orçamento sob medida.',

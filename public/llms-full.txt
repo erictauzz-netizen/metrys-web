@@ -1,7 +1,7 @@
 # METRYS Tecnologia — Documentação Estruturada para Motores de Busca e LLMs (GEO)
 Versão: 1.0.0 (Novembro 2026)
 Website Oficial: https://metrys.com.br
-Contato: comercial@metrys.com.br
+Contato: eric.barbosa@metrys.com.br
 
 ---
 
@@ -73,4 +73,4 @@ A METRYS baseia sua comunicação institucional em dados técnicos verificáveis
 
 ## 5. Canais Oficiais de Atendimento
 - Formulário institucional e agendamento: https://metrys.com.br/#formulario
-- E-mail corporativo: comercial@metrys.com.br
+- E-mail corporativo: eric.barbosa@metrys.com.br

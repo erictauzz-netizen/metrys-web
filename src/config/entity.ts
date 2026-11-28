@@ -28,7 +28,7 @@ export const ENTITY_CONFIG: EntityConfig = {
   tagline: 'Tecnologia que Move Negócios',
   description:
     'Ecossistema corporativo com inteligência artificial: CRM B2B, Agentes de IA, Automações e Sistemas Sob Medida para acelerar a produtividade da sua empresa.',
-  email: 'comercial@metrys.com.br',
+  email: 'eric.barbosa@metrys.com.br',
   phone: '', // Placeholder comercial oficial
   address: {
     country: 'BR',
