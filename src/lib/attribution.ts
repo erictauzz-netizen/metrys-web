@@ -24,7 +24,7 @@ export function initAttribution(defaultPillar?: string): AttributionData {
 
   try {
     const existing = sessionStorage.getItem(STORAGE_KEY);
-    let parsed: AttributionData = existing ? JSON.parse(existing) : null;
+    let parsed: AttributionData | null = existing ? JSON.parse(existing) : null;
 
     if (!parsed) {
       const url = new URL(window.location.href);
@@ -44,9 +44,35 @@ export function initAttribution(defaultPillar?: string): AttributionData {
       };
 
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
-    } else if (defaultPillar && !parsed.pillar_interest) {
-      parsed.pillar_interest = defaultPillar;
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+    } else {
+      const url = new URL(window.location.href);
+      const params = url.searchParams;
+      let updated = false;
+
+      if (defaultPillar && !parsed.pillar_interest) {
+        parsed.pillar_interest = defaultPillar;
+        updated = true;
+      }
+
+      for (const key of [
+        'utm_source',
+        'utm_medium',
+        'utm_campaign',
+        'utm_term',
+        'utm_content',
+        'fbclid',
+        'gclid',
+      ] as const) {
+        const val = params.get(key);
+        if (val && !parsed[key]) {
+          parsed[key] = val;
+          updated = true;
+        }
+      }
+
+      if (updated) {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+      }
     }
 
     return parsed;
@@ -75,12 +101,65 @@ export function getAttributionData(): AttributionData {
 }
 
 /**
+ * Inicializa Google Analytics 4 (gtag.js) quando VITE_GA_MEASUREMENT_ID estiver configurado,
+ * mantendo window.dataLayer e window.gtag sempre definidos com segurança no cliente.
+ */
+export function initGa4(measurementId?: string) {
+  if (typeof window === 'undefined') return;
+  const w = window as unknown as {
+    dataLayer?: unknown[];
+    gtag?: (...args: unknown[]) => void;
+    __metrysGaInitialized?: string;
+  };
+
+  w.dataLayer = w.dataLayer || [];
+  if (typeof w.gtag !== 'function') {
+    w.gtag = (...args: unknown[]) => {
+      w.dataLayer?.push(args);
+    };
+  }
+
+  const cleanId = (measurementId || '').trim();
+  if (!cleanId || w.__metrysGaInitialized === cleanId) return;
+
+  w.__metrysGaInitialized = cleanId;
+  w.gtag('js', new Date());
+  w.gtag('config', cleanId, { send_page_view: true });
+
+  const existingScript = document.querySelector(`script[data-ga4-id="${cleanId}"]`);
+  if (!existingScript) {
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(cleanId)}`;
+    script.setAttribute('data-ga4-id', cleanId);
+    document.head.appendChild(script);
+  }
+}
+
+/**
  * Envio seguro de evento ao Google Analytics 4 (quando configurado via VITE_GA_MEASUREMENT_ID)
  */
-export function sendGaEvent(eventName: string, params: Record<string, any> = {}) {
+export function sendGaEvent(eventName: string, params: Record<string, unknown> = {}) {
   if (typeof window === 'undefined') return;
-  const w = window as any;
+  const w = window as unknown as {
+    gtag?: (...args: unknown[]) => void;
+    dataLayer?: unknown[];
+  };
   if (typeof w.gtag === 'function') {
     w.gtag('event', eventName, params);
+  } else if (Array.isArray(w.dataLayer)) {
+    w.dataLayer.push(['event', eventName, params]);
   }
+}
+
+/**
+ * Evento dedicado de clique em botões/links de WhatsApp com contexto de página e pilar
+ */
+export function trackWhatsAppClick(page: string, pillar?: string) {
+  const attribution = getAttributionData();
+  sendGaEvent('whatsapp_click', {
+    event_category: 'engagement',
+    page: page || (typeof window !== 'undefined' ? window.location.pathname || '/' : '/'),
+    pillar: pillar || attribution.pillar_interest || 'geral',
+  });
 }

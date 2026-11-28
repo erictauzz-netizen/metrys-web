@@ -1,0 +1,71 @@
+name: IndexNow Submit on Production Deploy
+
+on:
+  deployment_status:
+  workflow_dispatch:
+
+jobs:
+  submit-indexnow:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       github.event.deployment_status.environment == 'Production')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Submit Sitemap URLs to IndexNow
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+        run: |
+          node -e '
+            const fs = require("fs");
+
+            async function main() {
+              const key = (process.env.INDEXNOW_KEY || "").trim();
+              if (!/^[0-9a-f]{32}$/.test(key)) {
+                console.error("INDEXNOW_KEY secret is missing or invalid (expected 32 lowercase hex chars).");
+                process.exit(1);
+              }
+
+              const sitemapRes = await fetch("https://metrys.com.br/sitemap.xml");
+              if (!sitemapRes.ok) {
+                console.error(`Failed to fetch sitemap.xml: HTTP ${sitemapRes.status}`);
+                process.exit(1);
+              }
+
+              const xml = await sitemapRes.text();
+              const urlList = [...xml.matchAll(/<loc>\s*(https:\/\/[^<\s]+)\s*<\/loc>/g)].map((m) => m[1]);
+              if (urlList.length === 0) {
+                console.error("No <loc> URLs found in sitemap.xml");
+                process.exit(1);
+              }
+
+              const payload = {
+                host: "metrys.com.br",
+                key,
+                keyLocation: `https://metrys.com.br/${key}.txt`,
+                urlList,
+              };
+
+              console.log("Submitting URLs to IndexNow:", urlList);
+
+              const res = await fetch("https://api.indexnow.org/indexnow", {
+                method: "POST",
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                body: JSON.stringify(payload),
+              });
+
+              const body = await res.text();
+              console.log(`IndexNow response: HTTP ${res.status} ${body}`);
+
+              if (!res.ok) {
+                console.error(`IndexNow submission failed with HTTP ${res.status}`);
+                process.exit(1);
+              }
+            }
+
+            main().catch((err) => {
+              console.error(err);
+              process.exit(1);
+            });
+          '

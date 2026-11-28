@@ -68,6 +68,10 @@ for (const route of routesToPrerender) {
     /<meta\s+property="og:url"\s+content="[^"]*"/i,
     `<meta property="og:url" content="${meta.canonical}"`
   );
+  html = html.replace(
+    /<meta\s+property="og:image:alt"\s+content="[^"]*"/i,
+    `<meta property="og:image:alt" content="${meta.title}"`
+  );
 
   // Substitui Twitter Card
   html = html.replace(
@@ -79,11 +83,41 @@ for (const route of routesToPrerender) {
     `<meta name="twitter:description" content="${meta.description}"`
   );
 
-  // Substitui Canonical
-  html = html.replace(
-    /<link\s+rel="canonical"\s+href="[^"]*"/i,
-    `<link rel="canonical" href="${meta.canonical}"`
-  );
+  // Preload da imagem Hero APENAS na rota Home '/'
+  if (route !== '/') {
+    html = html.replace(
+      /\s*<!--\s*LCP Preload Hero Image\s*-->\s*/i,
+      '\n'
+    );
+    html = html.replace(
+      /\s*<link\s+rel="preload"\s+as="image"\s+href="\/images\/hero-systems-integrated\.webp"[^>]*>\s*/i,
+      '\n'
+    );
+  }
+
+  // Tratamento específico para /404 vs rotas indexáveis
+  if (route === '/404') {
+    // Substitui o meta robots existente por noindex, follow (sem duplicar tags)
+    html = html.replace(
+      /<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i,
+      '<meta name="robots" content="noindex, follow" />'
+    );
+    // Omite/remove link canonical na página 404
+    html = html.replace(
+      /\s*<!--\s*Canonical\s*-->\s*/i,
+      '\n'
+    );
+    html = html.replace(
+      /\s*<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>\s*/i,
+      '\n'
+    );
+  } else {
+    // Substitui Canonical autorreferente
+    html = html.replace(
+      /<link\s+rel="canonical"\s+href="[^"]*"/i,
+      `<link rel="canonical" href="${meta.canonical}"`
+    );
+  }
 
   // Substitui JSON-LD Schema
   html = html.replace(
@@ -91,16 +125,14 @@ for (const route of routesToPrerender) {
     `<script type="application/ld+json">\n${schemaJson}\n    </script>`
   );
 
-  // Tratamento específico de robôs para 404
-  if (route === '/404') {
-    html = html.replace(
-      '</head>',
-      '  <meta name="robots" content="noindex, follow">\n  </head>'
-    );
-  }
+  // Remove preload inline emitido pelo React 19 renderToString (já declarado em <head> na Home)
+  const cleanedAppHtml = appHtml.replace(
+    /<link\s+rel="preload"\s+as="image"\s+href="\/images\/hero-systems-integrated\.webp"[^>]*\/?>/gi,
+    ''
+  );
 
   // Injeta o HTML estático no root
-  html = html.replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`);
+  html = html.replace('<div id="root"></div>', `<div id="root">${cleanedAppHtml}</div>`);
 
   let targetPath;
   if (route === '/') {

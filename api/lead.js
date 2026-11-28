@@ -323,7 +323,8 @@ function isOriginAllowed(origin) {
 }
 
 export default async function handler(req, res) {
-  const origin = getHeader(req, 'origin');
+  const rawOrigin = getHeader(req, 'origin');
+  const origin = typeof rawOrigin === 'string' ? rawOrigin.trim() : '';
   if (origin && isOriginAllowed(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Vary', 'Origin');
@@ -339,6 +340,14 @@ export default async function handler(req, res) {
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed', retryable: false, code: 'method_not_allowed' });
+  }
+
+  if (origin && !isOriginAllowed(origin)) {
+    return res.status(403).json({
+      error: 'Origin not allowed',
+      retryable: false,
+      code: 'forbidden_origin',
+    });
   }
 
   try {
@@ -632,6 +641,19 @@ export default async function handler(req, res) {
     // 6. Sincronização direta com o Funil de Vendas Kanban (novo-crm-vercel)
     try {
       const crmWebhookUrl = process.env.KANBAN_CRM_WEBHOOK_URL || 'https://novo-crm-vercel.vercel.app/api/api/v1/leads';
+      const utmSummary = Object.entries(utm)
+        .map(([k, v]) => `${k}=${v}`)
+        .join(', ');
+      const attributionNotes = [
+        rawMensagem ? `Mensagem do site:\n${rawMensagem}` : 'Lead capturado via formulário oficial metrys.com.br',
+        pillarInterest ? `Pilar de interesse: ${pillarInterest}` : null,
+        landingPage ? `Landing page: ${landingPage}` : null,
+        initialReferrer ? `Referrer inicial: ${initialReferrer}` : null,
+        utmSummary ? `UTMs: ${utmSummary}` : null,
+      ]
+        .filter(Boolean)
+        .join('\n');
+
       const crmPayload = {
         name: rawName || phoneE164 || rawEmail || 'Novo Lead',
         phone: phoneE164 || rawPhone || undefined,
@@ -639,7 +661,11 @@ export default async function handler(req, res) {
         company: rawEmpresa || undefined,
         title: leadTitle,
         source: 'Site METRYS',
-        notes: rawMensagem ? `Mensagem do site:\n${rawMensagem}` : 'Lead capturado via formulário oficial metrys.com.br',
+        notes: attributionNotes,
+        ...(landingPage ? { landing_page: landingPage } : {}),
+        ...(initialReferrer ? { initial_referrer: initialReferrer } : {}),
+        ...(pillarInterest ? { pillar_interest: pillarInterest } : {}),
+        ...utm,
       };
 
       await fetchWithTimeout(

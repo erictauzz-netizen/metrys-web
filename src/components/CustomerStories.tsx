@@ -8,6 +8,9 @@ export const CustomerStories: FC = () => {
       segment: 'Distribuição & Logística B2B',
       role: 'Diretoria Comercial',
       image: '/images/executive-man.jpg',
+      imageWebp: '/images/executive-man.webp',
+      width: 240,
+      height: 360,
       module: 'METRYS AI + CRM B2B',
       tagline: 'Qualificação no WhatsApp com registro imediato no funil',
       description:
@@ -17,6 +20,9 @@ export const CustomerStories: FC = () => {
       segment: 'Engenharia & Controladoria',
       role: 'Operações e Fiscal',
       image: '/images/executive-woman.jpg',
+      imageWebp: '/images/executive-woman.webp',
+      width: 240,
+      height: 359,
       module: 'METRYS Automações & ERP',
       tagline: 'Faturamento e conciliação integrados ao ERP',
       description:
@@ -26,6 +32,9 @@ export const CustomerStories: FC = () => {
       segment: 'Consultoria & Serviços B2B',
       role: 'Atendimento Corporativo',
       image: '/images/consulting-session.jpg',
+      imageWebp: '/images/consulting-session.webp',
+      width: 300,
+      height: 200,
       module: 'METRYS AI + Sob Medida',
       tagline: 'Triagem 24/7 parametrizada com regras do negócio',
       description:
@@ -85,11 +94,18 @@ export const CustomerStories: FC = () => {
               {/* Area / Segment Info */}
               <div className="pt-6 mt-6 border-t border-[#E2E8F0] flex items-center gap-3.5">
                 <div className="w-13 h-13 rounded-full overflow-hidden border-2 border-white shadow-sm flex-shrink-0">
-                  <img
-                    src={item.image}
-                    alt={`${item.role} — ${item.segment}`}
-                    className="w-12 h-12 rounded-full object-cover object-top"
-                  />
+                  <picture>
+                    <source srcSet={item.imageWebp} type="image/webp" />
+                    <img
+                      src={item.image}
+                      alt={`${item.role} — ${item.segment}`}
+                      width={item.width}
+                      height={item.height}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-12 h-12 rounded-full object-cover object-top"
+                    />
+                  </picture>
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-[#0A1128] leading-tight">

@@ -1,12 +1,13 @@
 import type { FC } from 'react';
 import { motion } from 'framer-motion';
 import { Bot, BarChart3, GitFork, Code2, ArrowRight } from 'lucide-react';
+import { updatePillarInterest } from '../lib/attribution';
 
 interface SolutionsPillBannersProps {
-  onSelectSolution: (solutionId: string) => void;
+  onSelectSolution?: (solutionId: string) => void;
 }
 
-export const SolutionsPillBanners: FC<SolutionsPillBannersProps> = ({ onSelectSolution }) => {
+export const SolutionsPillBanners: FC<SolutionsPillBannersProps> = () => {
   const items = [
     {
       id: 'ai',
@@ -50,17 +51,15 @@ export const SolutionsPillBanners: FC<SolutionsPillBannersProps> = ({ onSelectSo
     <section className="relative -mt-6 sm:-mt-10 lg:-mt-12 z-20 max-w-[1520px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-8 lg:px-12">
       <h2 className="sr-only">Módulos e Soluções do Ecossistema METRYS</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-        {items.map((item, idx) => {
+        {items.map((item) => {
           const Icon = item.icon;
           return (
-            <motion.div
+            <motion.a
               key={item.id}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: idx * 0.08 }}
+              href={item.href}
+              onClick={() => updatePillarInterest(item.id)}
               whileHover={{ y: -4, scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => onSelectSolution(item.id)}
               className="group cursor-pointer bg-white/95 backdrop-blur-md rounded-2xl p-5 sm:p-6 border border-[#CBD5E1] shadow-card hover:shadow-card-hover hover:border-[#0A1128] transition-all duration-200 flex items-center justify-between gap-4 text-left relative overflow-hidden"
             >
               {/* Top subtle highlight */}
@@ -78,7 +77,7 @@ export const SolutionsPillBanners: FC<SolutionsPillBannersProps> = ({ onSelectSo
                     {item.title}
                   </h3>
                 </div>
-                <p className="text-[11px] text-[#64748B] leading-snug line-clamp-2">
+                <p className="text-[11px] text-[#475569] leading-snug line-clamp-2">
                   {item.description}
                 </p>
               </div>
@@ -87,7 +86,7 @@ export const SolutionsPillBanners: FC<SolutionsPillBannersProps> = ({ onSelectSo
               <div className="w-8 h-8 rounded-full bg-[#F1F5F9] border border-[#E2E8F0] flex-shrink-0 flex items-center justify-center text-[#475569] group-hover:bg-[#0A1128] group-hover:text-white group-hover:border-transparent transition-all duration-200">
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
               </div>
-            </motion.div>
+            </motion.a>
           );
         })}
       </div>

@@ -78,6 +78,8 @@ export function generateSchemaGraph(route: RouteMeta) {
     breadcrumb: {
       '@id': `${route.canonical}#breadcrumb`,
     },
+    datePublished: route.datePublished || '2026-11-28',
+    dateModified: route.dateModified || '2026-11-28',
     inLanguage: 'pt-BR',
   };
 

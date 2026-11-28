@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, type FC, type FormEvent } from 'react';
 import { toast } from 'sonner';
-import { getAttributionData, sendGaEvent } from '../lib/attribution';
+import { getAttributionData, sendGaEvent, trackWhatsAppClick } from '../lib/attribution';
 import {
   Send,
   Phone,
@@ -16,10 +16,10 @@ import {
   Check,
   ExternalLink,
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
 
 interface ContactSectionProps {
   initialNotes?: string;
+  pillarInterest?: string;
 }
 
 interface PendingLeadPayload {
@@ -199,6 +199,7 @@ async function postLeadToApi(record: PendingLeadRecord): Promise<PostLeadOutcome
 
 export const ContactSection: FC<ContactSectionProps> = ({
   initialNotes = '',
+  pillarInterest,
 }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -232,12 +233,18 @@ export const ContactSection: FC<ContactSectionProps> = ({
       event_category: 'lead',
       event_label: 'formulario_contato',
     });
-    confetti({
-      particleCount: 60,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#0A1128', '#2A4365', '#1E2E4A', '#6B82A0', '#CBD7E5'],
-    });
+    void import('canvas-confetti')
+      .then(({ default: confetti }) => {
+        confetti({
+          particleCount: 60,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#0A1128', '#2A4365', '#1E2E4A', '#6B82A0', '#CBD7E5'],
+        });
+      })
+      .catch(() => {
+        // Ignora caso confetti falhe em rede restrita
+      });
     toast.success(
       wasAutoFlush
         ? 'Solicitação confirmada e enviada ao CRM! Um consultor entrará em contato em breve.'
@@ -368,6 +375,7 @@ export const ContactSection: FC<ContactSectionProps> = ({
 
     const attribution = getAttributionData();
     const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
+    const resolvedPillar = pillarInterest || attribution.pillar_interest;
     const payload: PendingLeadPayload = {
       nome: name.trim(),
       telefone: phone.trim(),
@@ -376,12 +384,12 @@ export const ContactSection: FC<ContactSectionProps> = ({
       ...(notes.trim() ? { mensagem: notes.trim() } : {}),
       landing_page: attribution.landing_page,
       initial_referrer: attribution.initial_referrer,
-      pillar_interest: attribution.pillar_interest,
+      ...(resolvedPillar ? { pillar_interest: resolvedPillar } : {}),
       ...(honeypot.trim() ? { website_url_confirm: honeypot.trim() } : {}),
     };
 
     for (const utmKey of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const) {
-      const val = searchParams.get(utmKey);
+      const val = searchParams.get(utmKey) || attribution[utmKey];
       if (val) payload[utmKey] = val;
     }
 
@@ -421,6 +429,11 @@ export const ContactSection: FC<ContactSectionProps> = ({
   };
 
   const whatsappDigits = FALLBACK_WHATSAPP.replace(/\D/g, '');
+  const directWhatsAppHref = whatsappDigits
+    ? `https://wa.me/${whatsappDigits}?text=${encodeURIComponent(
+        'Olá, equipe METRYS! Gostaria de falar com um especialista sobre as soluções corporativas.'
+      )}`
+    : null;
   const fallbackWhatsAppHref =
     pendingLead && whatsappDigits
       ? `https://wa.me/${whatsappDigits}?text=${encodeURIComponent(
@@ -459,11 +472,18 @@ export const ContactSection: FC<ContactSectionProps> = ({
             {/* Corporate Consultation Showcase with Real People */}
             <div className="relative rounded-2xl overflow-hidden border border-[#CBD5E1] shadow-card bg-white mt-4">
               <div className="relative h-48 w-full">
-                <img
-                  src="/images/business-handshake.jpg"
-                  alt="Aperto de mão corporativo e alinhamento de diretoria"
-                  className="w-full h-full object-cover object-center"
-                />
+                <picture>
+                  <source srcSet="/images/business-handshake.webp" type="image/webp" />
+                  <img
+                    src="/images/business-handshake.jpg"
+                    alt="Aperto de mão corporativo e alinhamento de diretoria"
+                    width={800}
+                    height={600}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover object-center"
+                  />
+                </picture>
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A1128]/80 via-[#0A1128]/20 to-transparent" />
                 <div className="absolute bottom-3 left-4 right-4 text-white">
                   <span className="text-xs font-bold block">
@@ -480,7 +500,7 @@ export const ContactSection: FC<ContactSectionProps> = ({
             <div className="space-y-3 pt-2">
               <div className="flex items-center gap-3 p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0]">
                 <div className="p-2.5 rounded-lg bg-white text-[#0A1128] border border-[#CBD5E1]">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  <ShieldCheck className="w-4 h-4 text-emerald-700" />
                 </div>
                 <div>
                   <span className="text-xs text-[#52667D] block">Sigilo & Confidencialidade</span>
@@ -497,6 +517,32 @@ export const ContactSection: FC<ContactSectionProps> = ({
                   <span className="text-sm font-bold text-[#0A1128]">Direto com Especialistas Sênior</span>
                 </div>
               </div>
+
+              {directWhatsAppHref && (
+                <a
+                  href={directWhatsAppHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() =>
+                    trackWhatsAppClick(
+                      typeof window !== 'undefined' ? window.location.pathname || '/' : '/',
+                      pillarInterest || getAttributionData().pillar_interest || 'geral'
+                    )
+                  }
+                  className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-[#0A1128] hover:bg-[#1E2E4A] text-white border border-[#0A1128] transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-white/10 text-emerald-300">
+                      <Phone className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="text-[11px] text-[#CBD7E5] block">Canal Direto Comercial</span>
+                      <span className="text-sm font-bold text-white">Falar via WhatsApp Corporativo</span>
+                    </div>
+                  </div>
+                  <ExternalLink className="w-4 h-4 text-[#CBD7E5]" />
+                </a>
+              )}
             </div>
           </div>
 
@@ -572,6 +618,12 @@ export const ContactSection: FC<ContactSectionProps> = ({
                             href={fallbackWhatsAppHref}
                             target="_blank"
                             rel="noopener noreferrer"
+                            onClick={() =>
+                              trackWhatsAppClick(
+                                typeof window !== 'undefined' ? window.location.pathname || '/' : '/',
+                                pendingLead?.payload?.pillar_interest || pillarInterest || getAttributionData().pillar_interest || 'geral'
+                              )
+                            }
                             className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-[#0A1128] bg-white border border-[#CBD5E1] hover:bg-[#F1F5F9] transition-all"
                           >
                             <ExternalLink className="w-3.5 h-3.5" />

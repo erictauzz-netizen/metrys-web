@@ -1,11 +1,11 @@
 # METRYS Tecnologia — Ecossistema Corporativo com IA
 > Tecnologia que Move Negócios
 
-A METRYS desenvolve soluções tecnológicas para empresas de médio e grande porte, integrando inteligência artificial, gestão comercial, automação de processos e desenvolvimento de software sob medida.
+A METRYS Tecnologia (https://metrys.com.br) desenvolve soluções tecnológicas para empresas de médio e grande porte em todo o Brasil, integrando inteligência artificial, gestão comercial, automação de processos e desenvolvimento de software sob medida.
 
 ## Módulos e Soluções
 - [METRYS CRM B2B](https://metrys.com.br/solucoes/crm-b2b): Plataforma de gestão comercial com funil visual Kanban, integração profunda com WhatsApp corporativo, rastreamento de negociações e previsibilidade de receita.
-- [METRYS Agentes de IA](https://metrys.com.br/solucoes/agentes-ia-whatsapp-voz): Agentes inteligentes para atendimento 24/7 em WhatsApp e voz, qualificação automática de leads com tempo médio de resposta inferior a 2 segundos. Camada de software e IA integrada a operadoras e troncos SIP parceiros homologados no Brasil.
+- [METRYS Agentes de IA](https://metrys.com.br/solucoes/agentes-ia-whatsapp-voz): Agentes inteligentes para atendimento 24/7 em WhatsApp e voz, qualificação automática de leads com tempo médio de resposta inferior a 2 segundos. Camada de software e IA integrada a operadoras e troncos SIP parceiros homologados pela Anatel no Brasil.
 - [METRYS Automações](https://metrys.com.br/solucoes/automacoes-integracoes-erp): Orquestração de workflows entre canais de atendimento e ERPs de mercado (Bling, Omie, Totvs, SAP, RD Station), automatizando faturamento, notas fiscais e conciliações bancárias.
 - [METRYS Software Sob Medida](https://metrys.com.br/solucoes/software-sob-medida): Desenvolvimento de sistemas corporativos personalizados, portais de clientes e plataformas cloud-native com ciclo de entregas por sprints ágeis (MVP a partir de 30 a 45 dias úteis).
 
@@ -18,6 +18,10 @@ A METRYS desenvolve soluções tecnológicas para empresas de médio e grande po
 - Isolamento estrito de dados por empresa (multi-tenancy com blindagem).
 - Criptografia padrão AES-256 em repouso e TLS 1.3 em trânsito.
 - Dados corporativos não utilizados para treinamento de modelos públicos abertos.
+
+## Desambiguação de Marca
+- A **METRYS Tecnologia** (`https://metrys.com.br`) é uma empresa brasileira de tecnologia B2B focada em CRM B2B, Agentes de IA, Automações ERP e Software Sob Medida.
+- A METRYS Tecnologia **não possui qualquer vínculo, afiliação ou parceria** com os domínios `metry.cc` ou `metries.com.br` nem com produtos ou serviços publicados nesses endereços.
 
 ## Contato e Canais Oficiais
 - Website: https://metrys.com.br

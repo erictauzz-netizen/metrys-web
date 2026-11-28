@@ -54,11 +54,18 @@ export const HumanInTheLoop: FC = () => {
         {/* Corporate Meeting Room Banner (Ambient People in Boardroom) */}
         <div className="mb-14 rounded-2xl overflow-hidden border border-[#CBD5E1] shadow-card bg-white grid grid-cols-1 lg:grid-cols-12">
           <div className="lg:col-span-7 relative min-h-[280px] lg:min-h-[380px]">
-            <img
-              src="/images/meeting-room.jpg"
-              alt="Reunião de consultoria estratégica da Metrys em sala de diretoria"
-              className="w-full h-full object-cover object-center"
-            />
+            <picture>
+              <source srcSet="/images/meeting-room.webp" type="image/webp" />
+              <img
+                src="/images/meeting-room.jpg"
+                alt="Reunião de consultoria estratégica da Metrys em sala de diretoria"
+                width={960}
+                height={540}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover object-center"
+              />
+            </picture>
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/40 hidden lg:block" />
           </div>
 

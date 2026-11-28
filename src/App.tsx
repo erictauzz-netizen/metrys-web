@@ -16,7 +16,8 @@ import { Footer } from './components/Footer';
 import { SolutionPage } from './components/SolutionPage';
 import { NotFoundPage } from './components/NotFoundPage';
 import { ROUTES } from './config/routes';
-import { initAttribution, updatePillarInterest } from './lib/attribution';
+import { ENTITY_CONFIG } from './config/entity';
+import { initAttribution, initGa4, updatePillarInterest } from './lib/attribution';
 
 interface AppProps {
   initialPath?: string;
@@ -32,21 +33,35 @@ export function App({ initialPath }: AppProps) {
   });
 
   const [contactNotes, setContactNotes] = useState<string>('');
+  const [selectedPillar, setSelectedPillar] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    // 1. Inicializa atribuição de primeiro toque e UTMs em sessionStorage
-    initAttribution();
+    // 1. Inicializa atribuição de primeiro toque, UTMs e GA4 no cliente
+    const normalizedPath = window.location.pathname.replace(/\/$/, '') || '/';
+    const routeMeta = ROUTES[normalizedPath];
+    initAttribution(routeMeta?.pillarKey);
+    initGa4(ENTITY_CONFIG.gaMeasurementId);
 
-    // 2. Canonicalização estrita no cliente: remove qualquer ?utm_*, ?fbclid= ou ?gclid=
+    // 2. Canonicalização estrita no cliente: remove ?utm_*, ?fbclid=, ?gclid= em rotas válidas e omite em 404
     try {
-      const cleanCanonicalHref = `${window.location.origin}${window.location.pathname.replace(/\/$/, '') || '/'}`;
-      let canonicalEl = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-      if (!canonicalEl) {
-        canonicalEl = document.createElement('link');
-        canonicalEl.setAttribute('rel', 'canonical');
-        document.head.appendChild(canonicalEl);
+      const existingCanonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+      if (normalizedPath !== '/404' && (normalizedPath === '/' || Boolean(routeMeta))) {
+        const hostname = window.location.hostname.toLowerCase();
+        const canonicalOrigin =
+          hostname === 'metrys.com.br' || hostname === 'www.metrys.com.br'
+            ? ENTITY_CONFIG.domain
+            : window.location.origin;
+        const cleanCanonicalHref = `${canonicalOrigin}${normalizedPath}`;
+        let canonicalEl = existingCanonical;
+        if (!canonicalEl) {
+          canonicalEl = document.createElement('link');
+          canonicalEl.setAttribute('rel', 'canonical');
+          document.head.appendChild(canonicalEl);
+        }
+        canonicalEl.setAttribute('href', cleanCanonicalHref);
+      } else if (existingCanonical) {
+        existingCanonical.remove();
       }
-      canonicalEl.setAttribute('href', cleanCanonicalHref);
     } catch {
       // Ignora erro em ambientes restritos
     }
@@ -89,6 +104,7 @@ export function App({ initialPath }: AppProps) {
     };
 
     updatePillarInterest(solutionId);
+    setSelectedPillar(solutionId);
 
     if (solutionId === 'all') {
       setContactNotes('Gostaria de entender a implantação unificada do ecossistema completo.');
@@ -164,7 +180,7 @@ export function App({ initialPath }: AppProps) {
         <FaqSection />
 
         {/* 10. Formulário de Agendamento Comercial & Contato */}
-        <ContactSection initialNotes={contactNotes} />
+        <ContactSection initialNotes={contactNotes} pillarInterest={selectedPillar} />
       </main>
 
       {/* Footer */}

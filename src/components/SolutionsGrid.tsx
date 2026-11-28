@@ -13,11 +13,15 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
     {
       id: 'crm',
       code: 'CRM',
+      href: '/solucoes/crm-b2b',
       title: 'METRYS CRM',
       subtitle: 'Gestão comercial',
       badge: 'Vendas & Pipelines',
       userRole: 'Diretoria Comercial & Vendedores',
       image: '/images/sales-director.jpg',
+      imageWebp: '/images/sales-director.webp',
+      imageWidth: 800,
+      imageHeight: 533,
       icon: BarChart3,
       tagline: 'Controle de funis, previsibilidade e follow-up automático.',
       description:
@@ -34,11 +38,15 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
     {
       id: 'ai',
       code: 'AI',
+      href: '/solucoes/agentes-ia-whatsapp-voz',
       title: 'METRYS AI',
       subtitle: 'Agentes inteligentes',
       badge: 'Autonomia & IA Dedicada',
       userRole: 'Equipes de Atendimento & Suporte 24/7',
       image: '/images/consultant-advisor.jpg',
+      imageWebp: '/images/consultant-advisor.webp',
+      imageWidth: 800,
+      imageHeight: 1200,
       icon: Bot,
       tagline: 'Assistentes corporativos que resolvem tarefas reais 24/7.',
       description:
@@ -55,11 +63,15 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
     {
       id: 'flow',
       code: 'AUTOMAÇÕES',
+      href: '/solucoes/automacoes-integracoes-erp',
       title: 'METRYS AUTOMAÇÕES',
       subtitle: 'Integração de processos e sistemas',
       badge: 'Conexão de Processos',
       userRole: 'Gestores de Operações & Controladoria',
       image: '/images/operations-flow.jpg',
+      imageWebp: '/images/operations-flow.webp',
+      imageWidth: 800,
+      imageHeight: 533,
       icon: GitFork,
       tagline: 'Unifique seus softwares e elimine o trabalho manual.',
       description:
@@ -76,11 +88,15 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
     {
       id: 'systems',
       code: 'SOB MEDIDA',
+      href: '/solucoes/software-sob-medida',
       title: 'METRYS SOB MEDIDA',
       subtitle: 'Desenvolvimento de sistemas',
       badge: 'Engenharia Sob Medida',
       userRole: 'Líderes de TI & Inovação Estratégica',
       image: '/images/tech-team.jpg',
+      imageWebp: '/images/tech-team.webp',
+      imageWidth: 800,
+      imageHeight: 533,
       icon: Code2,
       tagline: 'Plataformas seguras, escaláveis e projetadas para o seu modelo.',
       description:
@@ -136,7 +152,7 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
           {solutions.map((item) => (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id as any)}
+              onClick={() => setActiveTab(item.id as 'crm' | 'ai' | 'flow' | 'systems')}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeTab === item.id
                   ? 'bg-[#0A1128] text-white shadow-sm'
@@ -165,11 +181,18 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
                 <div>
                   {/* Panoramic Photo of People Working in this Area */}
                   <div className="relative h-48 w-full overflow-hidden bg-slate-100">
-                    <img
-                      src={sol.image}
-                      alt={`Equipe utilizando ${sol.title}`}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                    />
+                    <picture>
+                      <source srcSet={sol.imageWebp} type="image/webp" />
+                      <img
+                        src={sol.image}
+                        alt={`Equipe utilizando ${sol.title}`}
+                        width={sol.imageWidth}
+                        height={sol.imageHeight}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </picture>
                     <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent" />
 
                     {/* Role Tag Floating over Photo */}
@@ -189,7 +212,9 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
                         </div>
                         <div>
                           <h3 className="text-2xl font-black text-[#0A1128] tracking-wider uppercase font-sans">
-                            {sol.title}
+                            <a href={sol.href} className="hover:text-[#2A4365] transition-colors">
+                              {sol.title}
+                            </a>
                           </h3>
                           <p className="text-xs font-bold text-[#52667D] uppercase tracking-widest mt-0.5">
                             {sol.subtitle}
@@ -225,21 +250,31 @@ export const SolutionsGrid: FC<SolutionsGridProps> = ({ onSelectSolution }) => {
                   </div>
                 </div>
 
-                {/* Card Footer: Metric & Action */}
-                <div className="p-8 pt-0">
-                  <div className="pt-6 border-t border-[#F1F5F9] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                {/* Card Footer: Metric & Actions */}
+                <div className="p-8 pt-0 space-y-3">
+                  <div className="pt-6 border-t border-[#F1F5F9] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="inline-flex items-center gap-2 text-xs font-display font-semibold text-[#0A1128] bg-[#F1F5F9] px-3.5 py-1.5 rounded-lg border border-[#E2E8F0]">
                       <Zap className="w-3.5 h-3.5 text-[#2A4365]" />
                       <span>{sol.impact}</span>
                     </div>
 
-                    <button
-                      onClick={() => onSelectSolution(sol.id)}
-                      className="inline-flex items-center justify-center gap-2 text-xs font-bold text-white bg-[#0A1128] hover:bg-[#1E2E4A] px-4 py-2.5 rounded-lg transition-all active:scale-95 shadow-sm font-sans"
-                    >
-                      <span>Configurar Módulo</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <a
+                        href={sol.href}
+                        className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-[#0A1128] bg-white hover:bg-[#F1F5F9] border border-[#CBD5E1] px-3.5 py-2.5 rounded-lg transition-colors font-sans"
+                      >
+                        <span>Ver detalhes</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </a>
+
+                      <button
+                        onClick={() => onSelectSolution(sol.id)}
+                        className="inline-flex items-center justify-center gap-2 text-xs font-bold text-white bg-[#0A1128] hover:bg-[#1E2E4A] px-4 py-2.5 rounded-lg transition-all active:scale-95 shadow-sm font-sans"
+                      >
+                        <span>Configurar Módulo</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                 </div>
 

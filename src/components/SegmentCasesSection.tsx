@@ -12,18 +12,27 @@ export const SegmentCasesSection: FC<SegmentCasesSectionProps> = ({ onCtaClick }
       id: 'construction',
       segment: 'Construção Civil',
       image: '/images/case-construction.jpg',
+      imageWebp: '/images/case-construction.webp',
+      width: 800,
+      height: 446,
       headline: 'Funil comercial integrado do lead à proposta',
     },
     {
       id: 'health',
       segment: 'Saúde',
       image: '/images/case-health.jpg',
+      imageWebp: '/images/case-health.webp',
+      width: 800,
+      height: 533,
       headline: 'Triagem e agendamento contínuo 24/7 com IA',
     },
     {
       id: 'commerce',
       segment: 'Comércio',
       image: '/images/case-commerce.jpg',
+      imageWebp: '/images/case-commerce.webp',
+      width: 800,
+      height: 446,
       headline: 'Qualificação instantânea e follow-up automatizado',
     },
   ];
@@ -71,11 +80,18 @@ export const SegmentCasesSection: FC<SegmentCasesSectionProps> = ({ onCtaClick }
                 className="group relative h-72 sm:h-80 lg:h-88 rounded-2xl overflow-hidden border border-[#CBD5E1] shadow-card hover:shadow-card-hover cursor-pointer flex flex-col justify-between p-6 text-left"
               >
                 {/* Background Image */}
-                <img
-                  src={item.image}
-                  alt={item.segment}
-                  className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                />
+                <picture>
+                  <source srcSet={item.imageWebp} type="image/webp" />
+                  <img
+                    src={item.image}
+                    alt={item.segment}
+                    width={item.width}
+                    height={item.height}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  />
+                </picture>
 
                 {/* Dark Vignette Overlay for Readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A1128]/95 via-[#0A1128]/50 to-[#0A1128]/25" />

@@ -14,6 +14,8 @@ export function render(url: string) {
     h1: 'Página Não Encontrada',
     badge: 'ERRO 404',
     answerFirst: '',
+    datePublished: '2026-11-28',
+    dateModified: '2026-11-28',
     schemaType: 'Service' as const,
     breadcrumbs: [{ name: 'Início', url: `${ENTITY_CONFIG.domain}/` }],
     features: [],

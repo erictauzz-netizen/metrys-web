@@ -13,7 +13,7 @@ export const PartnerLogos: FC = () => {
   return (
     <section className="py-7 bg-white border-b border-[#E2E8F0] overflow-hidden">
       <div className="max-w-[1520px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-8 lg:px-12 mb-4">
-        <p className="text-[11px] font-bold text-[#94A3B8] uppercase tracking-widest text-center">
+        <p className="text-[11px] font-bold text-[#475569] uppercase tracking-widest text-center">
           Tecnologias e plataformas integradas pela METRYS
         </p>
       </div>
@@ -31,7 +31,7 @@ export const PartnerLogos: FC = () => {
           {ticker.map((name, i) => (
             <span
               key={`${name}-${i}`}
-              className="text-xs sm:text-sm font-bold text-[#1E2E4A] tracking-tight opacity-50 hover:opacity-100 transition-opacity flex-shrink-0 px-2"
+              className="text-xs sm:text-sm font-bold text-[#1E2E4A] tracking-tight opacity-80 hover:opacity-100 transition-opacity flex-shrink-0 px-2"
             >
               {name}
             </span>
